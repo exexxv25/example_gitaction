@@ -1,0 +1,49 @@
+name: CICD
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run composer install
+        run: composer install -n --prefer-dist
+      - name: Run yarn
+        run: yarn && yarn dev
+      - name: Run tests
+        run: ./vendor/bin/phpunit
+        env:
+          APP_ENV: testing
+      - name: Upload artifacts
+        uses: actions/upload-artifact@master
+        if: failure()
+        with:
+          name: Logs
+          path: ./storage/logs
+      - name: Notificacion result
+        uses: satak/webrequest-action@master
+        with:
+          url: https://webhook.site/
+          method: GET
+          payload: '{"project": "Backend_Neighbors", "status": "${{ job.status }}" }'
+      - name: Commit built assets
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git checkout -B deploy
+          git add -f public/
+          git commit -m "Build front-end assets"
+          git push -f origin deploy
+      - name: Deploy to production
+        uses: appleboy/ssh-action@master
+        with:
+          username: YOUR USERNAME GOES HERE
+          host: YOUR SERVER'S HOSTNAME GOES HERE
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: 'cd /var/www/html && ./server_deploy.sh'
+
