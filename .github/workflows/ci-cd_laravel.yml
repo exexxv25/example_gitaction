@@ -6,7 +6,7 @@ on:
     branches: [ master ]
 jobs:
 
-  dusk-php:
+  test-php:
     runs-on: ubuntu-latest
 
     services:
