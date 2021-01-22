@@ -16,6 +16,7 @@ echo "Deploying application ..."
     # Migrate database
     php artisan migrate --force
 
+    php artisan l5-swagger:generate
     # Note: If you're using queue workers, this is the place to restart them.
     # ...
     php artisan l5-swagger:generate

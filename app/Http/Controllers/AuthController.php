@@ -1,16 +1,24 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 use Validator;
 
 /**
-* @OA\Info(title="Neighbors", version="release 1.0")
-*
-*/
-
+ * @OA\Info(title="Neighbors", version="release 1.0")
+ * @OA\SecurityScheme(
+ *     type="http",
+ *     description="Header autorization toker JWT",
+ *     name="Token Bearer",
+ *     in="header",
+ *     scheme="bearer",
+ *     bearerFormat="JWT",
+ *     securityScheme="apiAuth",
+ * ),
+ */
 class AuthController extends Controller
 {
     /**
@@ -18,7 +26,8 @@ class AuthController extends Controller
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
@@ -53,7 +62,7 @@ class AuthController extends Controller
      *       @OA\Property(property="expires_in", type="int", example=3600)
      *        )
      *     ),
-      * @OA\Response(
+     * @OA\Response(
      *    response=401,
      *    description="Wrong credentials response",
      *    @OA\JsonContent(
@@ -70,9 +79,9 @@ class AuthController extends Controller
      *     )
      * )
      */
-    public function login(Request $request){
-
-    	$validator = Validator::make($request->all(), [
+    public function login(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|string|min:6',
         ]);
@@ -93,7 +102,6 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-
 
     /**
      * @OA\Post(
@@ -129,7 +137,7 @@ class AuthController extends Controller
      *        )
      *     )
      *     ),
-      * @OA\Response(
+     * @OA\Response(
      *    response=400,
      *    description="Bad Request",
      *    @OA\JsonContent(
@@ -138,14 +146,15 @@ class AuthController extends Controller
      *     ),
      * )
      */
-     public function register(Request $request) {
+    public function register(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|between:2,100',
             'email' => 'required|string|email|max:100|unique:users',
             'password' => 'required|string|confirmed|min:6',
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
 
@@ -156,17 +165,42 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'User successfully registered',
-            'user' => $user
+            'user' => $user,
         ], 201);
     }
-
 
     /**
      * Log the user out (Invalidate the token).
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function logout() {
+
+    /**
+     * @OA\Post(
+     * path="/auth/logout",
+     * summary="Logout",
+     * description="Logout ( Primero autorizar los headers con el token JWT provisto en el login)",
+     * operationId="authLogout",
+     * tags={"AUTH"},
+     * @OA\Response(
+     *    response=200,
+     *    description="Ok",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="User successfully signed out"),
+     *        )
+     *     ),
+     * @OA\Response(
+     *    response=401,
+     *    description="Error: Unauthorized",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="error", type="string", example="Unauthenticated")
+     *        )
+     *     ),
+     *  security={{ "apiAuth": {} }}
+     * )
+     */
+    public function logout()
+    {
         auth()->logout();
 
         return response()->json(['message' => 'User successfully signed out']);
@@ -177,7 +211,35 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function refresh() {
+
+    /**
+     * @OA\Post(
+     * path="/auth/refresh",
+     * summary="Refrescar Token",
+     * description="Refrescar Token ( Primero autorizar los headers con el token JWT provisto en el login)",
+     * operationId="authRefresh",
+     * tags={"AUTH"},
+     * @OA\Response(
+     *    response=200,
+     *    description="Ok",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="access_token", type="string", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6NjA5MFwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MTA5ODc0MDIsImV4cCI6MTYxMDk5MTAwMiwibmJmIjoxNjEwOTg3NDAyLCJqdGkiOiJlUXlTTzN2ZnVmY0UzS0F6Iiwic3ViIjoxLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.HE5tmEaJ57_Z-PAgq9kTTQIvT_w7ycd-Hrtmez9YI2g"),
+     *       @OA\Property(property="token_type", type="string", example="bearer"),
+     *       @OA\Property(property="expires_in", type="int", example=3600)
+     *        )
+     *     ),
+     * @OA\Response(
+     *    response=401,
+     *    description="The access token provided is expired,",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="error", type="string", example="Unauthorized")
+     *        )
+     *     ),
+     *  security={{ "apiAuth": {} }}
+     * )
+     */
+    public function refresh()
+    {
         return $this->createNewToken(auth()->refresh());
     }
 
@@ -186,7 +248,8 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function userProfile() {
+    public function userProfile()
+    {
         return response()->json(auth()->user());
     }
 
@@ -197,7 +260,8 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function createNewToken($token){
+    protected function createNewToken($token)
+    {
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
