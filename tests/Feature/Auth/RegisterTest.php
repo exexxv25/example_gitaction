@@ -2,11 +2,9 @@
 
 namespace Tests\Feature\Auth;
 
-use Tests\TestCase;
 use App\Models\User;
 use Faker\Factory as Faker;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class RegisterTest extends TestCase
 {
@@ -22,21 +20,17 @@ class RegisterTest extends TestCase
             'name' => $faker->name,
             'email' => $faker->unique()->safeEmail,
             'password' => 'neighbors3212021',
-            'password_confirmation' => 'neighbors3212021'
+            'password_confirmation' => 'neighbors3212021',
             ]);
 
         $response
             ->assertStatus(201)
             ->assertJson([
-                'user' => true
+                'user' => true,
             ]);
-
-
 
         $data = json_decode($response->getContent());
 
         User::find($data->user->id)->delete();
-
     }
-
 }

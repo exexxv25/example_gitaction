@@ -216,6 +216,1199 @@
                     }
                 }
             }
+        },
+        "/auth/logout": {
+            "post": {
+                "tags": [
+                    "AUTH"
+                ],
+                "summary": "Logout",
+                "description": "Logout ( Primero autorizar los headers con el token JWT provisto en el login)",
+                "operationId": "authLogout",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User successfully signed out"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Error: Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/auth/refresh": {
+            "post": {
+                "tags": [
+                    "AUTH"
+                ],
+                "summary": "Refrescar Token",
+                "description": "Refrescar Token ( Primero autorizar los headers con el token JWT provisto en el login)",
+                "operationId": "authRefresh",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "type": "string",
+                                            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6NjA5MFwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MTA5ODc0MDIsImV4cCI6MTYxMDk5MTAwMiwibmJmIjoxNjEwOTg3NDAyLCJqdGkiOiJlUXlTTzN2ZnVmY0UzS0F6Iiwic3ViIjoxLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.HE5tmEaJ57_Z-PAgq9kTTQIvT_w7ycd-Hrtmez9YI2g"
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "bearer"
+                                        },
+                                        "expires_in": {
+                                            "type": "int",
+                                            "example": 3600
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "The access token provided is expired,",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/location": {
+            "get": {
+                "tags": [
+                    "Barrios"
+                ],
+                "summary": "Listar los barrios",
+                "description": "Listar los barrios (con Token)",
+                "operationId": "LocationsGet",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ok"
+                                        },
+                                        "obj": {
+                                            "type": "string",
+                                            "example": "array()"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Error: Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Barrios"
+                ],
+                "summary": "Modificar un Barrio",
+                "description": "Modificar un Barrio (con Token)",
+                "operationId": "LocationsUpdate",
+                "requestBody": {
+                    "description": "Datos del Barrio",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": 1
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "La arboleda"
+                                    },
+                                    "altitude": {
+                                        "type": "double",
+                                        "format": "number",
+                                        "example": 13.22132
+                                    },
+                                    "latitude": {
+                                        "type": "double",
+                                        "format": "number",
+                                        "example": 13.22132
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Location successfully updated"
+                                        },
+                                        "objLocation": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "La arboleda"
+                                                },
+                                                "altitude": {
+                                                    "type": "double",
+                                                    "format": "number",
+                                                    "example": 13.22132
+                                                },
+                                                "latitude": {
+                                                    "type": "double",
+                                                    "format": "number",
+                                                    "example": 13.22132
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2021-01-18T15:31:11.000000Z"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2021-01-18T15:31:11.000000Z"
+                                                },
+                                                "id": {
+                                                    "type": "int",
+                                                    "format": "number",
+                                                    "example": 2
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Wrong credentials response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "example": "The id field is required."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Barrios"
+                ],
+                "summary": "Crear un Barrio",
+                "description": "Crear un Barrio (con Token)",
+                "operationId": "LocationsCreate",
+                "requestBody": {
+                    "description": "Datos del Barrio",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "La arboleda"
+                                    },
+                                    "altitude": {
+                                        "type": "double",
+                                        "format": "number",
+                                        "example": 13.22132
+                                    },
+                                    "latitude": {
+                                        "type": "double",
+                                        "format": "number",
+                                        "example": 13.22132
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Location successfully registered"
+                                        },
+                                        "objLocation": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "La arboleda"
+                                                },
+                                                "altitude": {
+                                                    "type": "double",
+                                                    "format": "number",
+                                                    "example": 13.22132
+                                                },
+                                                "latitude": {
+                                                    "type": "double",
+                                                    "format": "number",
+                                                    "example": 13.22132
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2021-01-18T15:31:11.000000Z"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2021-01-18T15:31:11.000000Z"
+                                                },
+                                                "id": {
+                                                    "type": "int",
+                                                    "format": "number",
+                                                    "example": 2
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Wrong credentials response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "name": {
+                                            "type": "string",
+                                            "example": "The name field is required."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/message": {
+            "get": {
+                "tags": [
+                    "Tickets"
+                ],
+                "summary": "Listar los tickets",
+                "description": "Listar los tickets (con Token)",
+                "operationId": "TicketsGet",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ok"
+                                        },
+                                        "obj": {
+                                            "type": "string",
+                                            "example": "array()"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Error: Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Tickets"
+                ],
+                "summary": "Modificar un ticket",
+                "description": "Modificar un ticket (con Token)",
+                "operationId": "TicketsUpdate",
+                "requestBody": {
+                    "description": "Datos del Ticket",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": 1
+                                    },
+                                    "user_id": {
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": 1
+                                    },
+                                    "type_id": {
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": 1
+                                    },
+                                    "location_id": {
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": 1
+                                    },
+                                    "opened": {
+                                        "type": "boolean",
+                                        "format": "number",
+                                        "example": 1
+                                    },
+                                    "subject": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "Alerta Covid"
+                                    },
+                                    "body": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "Mi vecino tiene covid"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Message successfully updated"
+                                        },
+                                        "objMessage": {
+                                            "properties": {
+                                                "body": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "Mi vecino tiene covid"
+                                                },
+                                                "subject": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "Alerta Covid"
+                                                },
+                                                "location_id": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": 1
+                                                },
+                                                "type_id": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": 1
+                                                },
+                                                "user_id": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": 1
+                                                },
+                                                "opened": {
+                                                    "type": "boolean",
+                                                    "format": "number",
+                                                    "example": 1
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2021-01-18T15:31:11.000000Z"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2021-01-18T15:31:11.000000Z"
+                                                },
+                                                "id": {
+                                                    "type": "int",
+                                                    "format": "number",
+                                                    "example": 2
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Wrong credentials response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "example": "The id field is required."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Tickets"
+                ],
+                "summary": "Generar un ticker",
+                "description": "Generar un ticker (con Token)",
+                "operationId": "TicketsCreate",
+                "requestBody": {
+                    "description": "Datos del Ticket",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "type_id",
+                                    "location_id",
+                                    "subject",
+                                    "body"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": 1
+                                    },
+                                    "type_id": {
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": 1
+                                    },
+                                    "location_id": {
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": 1
+                                    },
+                                    "subject": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "Alerta Covid"
+                                    },
+                                    "body": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "Mi vecino tiene covid"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Message successfully registered"
+                                        },
+                                        "objMessage": {
+                                            "properties": {
+                                                "body": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "Mi vecino tiene covid"
+                                                },
+                                                "subject": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "Alerta Covid"
+                                                },
+                                                "location_id": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": 1
+                                                },
+                                                "type_id": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": 1
+                                                },
+                                                "user_id": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": 1
+                                                },
+                                                "opened": {
+                                                    "type": "boolean",
+                                                    "format": "number",
+                                                    "example": 1
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2021-01-18T15:31:11.000000Z"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2021-01-18T15:31:11.000000Z"
+                                                },
+                                                "id": {
+                                                    "type": "int",
+                                                    "format": "number",
+                                                    "example": 2
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Wrong credentials response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user_id": {
+                                            "type": "number",
+                                            "example": "The user_id field is required."
+                                        },
+                                        "type_id": {
+                                            "type": "number",
+                                            "example": "The type_id field is required."
+                                        },
+                                        "location_id": {
+                                            "type": "number",
+                                            "example": "The location_id field is required."
+                                        },
+                                        "subject": {
+                                            "type": "string",
+                                            "example": "The subject field is required."
+                                        },
+                                        "body": {
+                                            "type": "string",
+                                            "example": "The body field is required."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/message/type": {
+            "get": {
+                "tags": [
+                    "Tickets"
+                ],
+                "summary": "Listar los tipos de tickets",
+                "description": "Listar los tipos de tickets (con Token)",
+                "operationId": "TicketsGetHistory",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ok"
+                                        },
+                                        "obj": {
+                                            "type": "string",
+                                            "example": "array()"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Error: Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/history/message/response": {
+            "post": {
+                "tags": [
+                    "Tickets - Mensajes"
+                ],
+                "summary": "Responder un ticker",
+                "description": "Responder un ticker (con Token)",
+                "operationId": "TicketsHisCreate",
+                "requestBody": {
+                    "description": "Datos para responder un Ticket",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "fk_message_id",
+                                    "fk_user_id"
+                                ],
+                                "properties": {
+                                    "fk_user_id": {
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": 1
+                                    },
+                                    "fk_message_id": {
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": 1
+                                    },
+                                    "body": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "Mi vecino sigue con covid"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Message successfully registered"
+                                        },
+                                        "objMessage": {
+                                            "properties": {
+                                                "body": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "Mi vecino sigue con covid"
+                                                },
+                                                "message_id": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": 1
+                                                },
+                                                "user_id": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": 1
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2021-01-18T15:31:11.000000Z"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2021-01-18T15:31:11.000000Z"
+                                                },
+                                                "id": {
+                                                    "type": "int",
+                                                    "format": "number",
+                                                    "example": 2
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Wrong credentials response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user_id": {
+                                            "type": "number",
+                                            "example": "The user_id field is required."
+                                        },
+                                        "message_id": {
+                                            "type": "number",
+                                            "example": "The message_id field is required."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/history/message/all/1": {
+            "get": {
+                "tags": [
+                    "Tickets - Mensajes"
+                ],
+                "summary": "Historial de respuestas de un ticker",
+                "description": "Historial de respuestas de un ticker (con Token)",
+                "operationId": "TicketsHisGet",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ok"
+                                        },
+                                        "obj": {
+                                            "type": "string",
+                                            "example": "array()"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Error: Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/history/message/edit": {
+            "put": {
+                "tags": [
+                    "Tickets - Mensajes"
+                ],
+                "summary": "Modificar una respuesta a un ticker",
+                "description": "Modificar una respuesta a un ticker (con Token)",
+                "operationId": "TicketsHisUpdate",
+                "requestBody": {
+                    "description": "Datos para editar una respuesta a un Ticket",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "body": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "Mi vecino sigue con covid V2"
+                                    },
+                                    "id": {
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Message successfully registered"
+                                        },
+                                        "objMessage": {
+                                            "properties": {
+                                                "body": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "Mi vecino sigue con covid V2"
+                                                },
+                                                "message_id": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": 1
+                                                },
+                                                "user_id": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": 1
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2021-01-18T15:31:11.000000Z"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2021-01-18T15:31:11.000000Z"
+                                                },
+                                                "id": {
+                                                    "type": "int",
+                                                    "format": "number",
+                                                    "example": 2
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Wrong credentials response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message_history_id": {
+                                            "type": "number",
+                                            "example": "The message_history_id field is required."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "apiAuth": {
+                "type": "http",
+                "description": "Header autorization toker JWT",
+                "name": "Token Bearer",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
         }
     },
     "security": [
