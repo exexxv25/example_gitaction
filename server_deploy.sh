@@ -8,7 +8,7 @@ echo "Deploying application ..."
     # Update codebase
     # git fetch origin deploy
     # git reset --hard origin/deploy
-    git pull
+    git fetch --all
 
     # Install dependencies based on lock file
     composer update
