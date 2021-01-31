@@ -4,14 +4,14 @@ namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 
-class ExampleTest extends TestCase
+class InitTest extends TestCase
 {
+
     /**
-     * A basic test example.
-     *
-     * @return void
+     * @group init
+     * @test
      */
-    public function testBasicTest()
+    public function initTest()
     {
         $this->assertTrue(true);
     }

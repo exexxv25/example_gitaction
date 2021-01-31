@@ -6156,6 +6156,7 @@ class ComposerStaticInit5fb6e5e2f6439f203d4c52248037a551
         'Tests\\Feature\\Message\\MessageTest' => __DIR__ . '/../..' . '/tests/Feature/Message/MessageTest.php',
         'Tests\\Feature\\Notice\\NoticeTest' => __DIR__ . '/../..' . '/tests/Feature/Notice/NoticeTest.php',
         'Tests\\TestCase' => __DIR__ . '/../..' . '/tests/TestCase.php',
+        'Tests\\Unit\\InitTest' => __DIR__ . '/../..' . '/tests/Unit/InitTest.php',
         'TheSeer\\Tokenizer\\Exception' => __DIR__ . '/..' . '/theseer/tokenizer/src/Exception.php',
         'TheSeer\\Tokenizer\\NamespaceUri' => __DIR__ . '/..' . '/theseer/tokenizer/src/NamespaceUri.php',
         'TheSeer\\Tokenizer\\NamespaceUriException' => __DIR__ . '/..' . '/theseer/tokenizer/src/NamespaceUriException.php',

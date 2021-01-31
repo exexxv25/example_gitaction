@@ -5555,6 +5555,7 @@ return array(
     'Tests\\Feature\\Message\\MessageTest' => $baseDir . '/tests/Feature/Message/MessageTest.php',
     'Tests\\Feature\\Notice\\NoticeTest' => $baseDir . '/tests/Feature/Notice/NoticeTest.php',
     'Tests\\TestCase' => $baseDir . '/tests/TestCase.php',
+    'Tests\\Unit\\InitTest' => $baseDir . '/tests/Unit/InitTest.php',
     'TheSeer\\Tokenizer\\Exception' => $vendorDir . '/theseer/tokenizer/src/Exception.php',
     'TheSeer\\Tokenizer\\NamespaceUri' => $vendorDir . '/theseer/tokenizer/src/NamespaceUri.php',
     'TheSeer\\Tokenizer\\NamespaceUriException' => $vendorDir . '/theseer/tokenizer/src/NamespaceUriException.php',
