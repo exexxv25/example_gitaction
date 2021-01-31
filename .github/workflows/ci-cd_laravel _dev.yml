@@ -1,7 +1,9 @@
 name: CI_CD Laravel
 on:
   push:
-    branches: [ testing ]
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
 jobs:
 
   test-php:
@@ -52,10 +54,4 @@ jobs:
           DB_DATABASE: dusk
           DB_PORT: 33306
           DB_USER: root
-      - name: Deploy to QA
-        uses: appleboy/ssh-action@master
-        with:
-          username: root
-          host: 35.199.111.202
-          password: adminneighbors
-          script: 'cd /var/www/html && ./server_deploy.sh'
+
