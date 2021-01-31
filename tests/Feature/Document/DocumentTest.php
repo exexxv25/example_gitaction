@@ -1,20 +1,21 @@
 <?php
 
-namespace Tests\Feature\Message;
+namespace Tests\Feature\Document;
 
 use Tests\TestCase;
 use App\Models\User;
-use App\Models\Message;
+use App\Models\Document;
+use Faker\Factory as Faker;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-
-class MessageTest extends TestCase
+class DocumentTest extends TestCase
 {
     /**
-     * @group message
+     * @group document
      * @test
      */
-    public function MessageTest()
+    public function documentsTest()
     {
 
         if (! User::where('email', 'admin@neighbors.com.ar')->exists()) {
@@ -32,47 +33,40 @@ class MessageTest extends TestCase
                 'access_token' => true,
             ]);
 
-        $response = $this->postJson('/api/v1/message', [
+        $response = $this->postJson('/api/v1/document', [
             'user_id' => 1,
-            'type_id' => 1,
             'location_id' => 1,
-            'subject' => "Alerta Covid",
-            'body' => "Mi vecino tiene covid",
+            'name' => "Reglamento vecinos",
             ]);
 
         $response
             ->assertStatus(201)
             ->assertJson([
-                'subject' => true,
+                'name' => true,
             ]);
 
         $data = json_decode($response->getContent());
 
-        $response = $this->putJson('/api/v1/message', [
+        $version = mt_rand();
+
+        $response = $this->putJson('/api/v1/document', [
             'id' => $data->id,
-            'subject' => "Alerta Covid V2",
-            'body' => "Mi vecino tiene covid V2",
+            'name' => "Reglamento vecinosV$version",
             ]);
 
         $response
             ->assertStatus(200)
             ->assertJson([
-                'id' => true,
+                'name' => true,
             ]);
 
-        $response = $this->getJson('/api/v1/message/type', [
-            ]);
-
-        $response
-            ->assertStatus(200);
-
-        $response = $this->getJson('/api/v1/message', [
+        $response = $this->getJson('/api/v1/document', [
             ]);
 
         $response
             ->assertStatus(200);
 
 
-        Message::find($data->id)->delete();
+        Document::find($data->id)->delete();
     }
 }

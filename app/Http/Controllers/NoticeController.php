@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Message;
-use App\Models\TypeMessage;
+use App\Models\Notice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-
-class MessageController extends Controller
+class NoticeController extends Controller
 {
     /**
      *
@@ -21,21 +19,21 @@ class MessageController extends Controller
 
     /**
      * @OA\Post(
-     * path="/api/v1/message",
-     * summary="Generar un ticket",
-     * description="Generar un ticket (con Token)",
-     * operationId="TicketsCreate",
-     * tags={"Tickets"},
+     * path="/api/v1/notice",
+     * summary="Generar una Noticia",
+     * description="Generar una Noticia (con Token)",
+     * operationId="NoticeCreate",
+     * tags={"Notice"},
      * @OA\RequestBody(
      *    required=true,
-     *    description="Datos del Ticket",
+     *    description="Datos de la Noticia",
      *    @OA\JsonContent(
-     *       required={"user_id","type_id","location_id","subject","body"},
+     *       required={"user_id","location_id","expired","tittle","body"},
      *       @OA\Property(property="user_id", type="int", format="number", example=1),
-     *       @OA\Property(property="type_id", type="int", format="number", example=1),
      *       @OA\Property(property="location_id", type="int", format="number", example=1),
-     *       @OA\Property(property="subject", type="string", format="text", example="Alerta Covid"),
-     *       @OA\Property(property="body", type="string", format="text", example="Mi vecino tiene covid"),
+     *       @OA\Property(property="expired", type="string", format="datetime", example="2021-01-18T15:31:11.000000Z"),
+     *       @OA\Property(property="tittle", type="string", format="text", example="Nuevo gimnasio"),
+     *       @OA\Property(property="body", type="string", format="text", example="Se habilito un nuevo ginmasio"),
      *    ),
      * ),
      * @OA\Response(
@@ -46,12 +44,11 @@ class MessageController extends Controller
      *        @OA\Property(
      *           property="objMessage",
      *           type="object",
-     *          @OA\Property(property="body", type="string", format="text", example="Mi vecino tiene covid"),
-     *          @OA\Property(property="subject", type="string", format="text", example="Alerta Covid"),
-     *          @OA\Property(property="location_id", type="string", format="text", example=1),
-     *          @OA\Property(property="type_id", type="string", format="text", example=1),
-     *          @OA\Property(property="user_id", type="string", format="text", example=1),
-     *          @OA\Property(property="opened", type="boolean", format="number", example=1),
+     *          @OA\Property(property="tittle", type="string", format="text", example="Nuevo gimnasio"),
+     *          @OA\Property(property="body", type="string", format="text", example="Se habilito un nuevo ginmasio"),
+     *          @OA\Property(property="expired", type="string", format="date", example="2021-01-18T15:31:11.000000Z"),
+     *          @OA\Property(property="location_id", type="integer", format="number", example=1),
+     *          @OA\Property(property="user_id", type="integer", format="number", example=1),
      *          @OA\Property(property="updated_at", type="string", format="date", example="2021-01-18T15:31:11.000000Z"),
      *          @OA\Property(property="created_at", type="string", format="date", example="2021-01-18T15:31:11.000000Z"),
      *          @OA\Property(property="id", type="int", format="number", example=2),
@@ -70,10 +67,8 @@ class MessageController extends Controller
      *    description="Unprocessable Entity",
      *    @OA\JsonContent(
      *       @OA\Property(property="user_id", type="number", example="The user_id field is required."),
-     *       @OA\Property(property="type_id", type="number", example="The type_id field is required."),
      *       @OA\Property(property="location_id", type="number", example="The location_id field is required."),
-     *       @OA\Property(property="subject", type="string", example="The subject field is required."),
-     *       @OA\Property(property="body", type="string", example="The body field is required."),
+     *       @OA\Property(property="name", type="string", example="The name field is required."),
      *        )
      *     ),
      *  security={{ "apiAuth": {} }}
@@ -84,47 +79,59 @@ class MessageController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'user_id'     => 'required|int',
-            'type_id'     => 'required|int',
             'location_id' => 'required|int',
-            'subject'  => 'required|string',
-            'body'     => 'required|string',
+            'expired'  => 'required|string',
+            'tittle'  => 'required|string',
+            'body'  => 'required|string',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['type' => 'data' , 'error' => $validator->errors()], 422);
         }
 
+        // dd($request->all());
 
-        $message = Message::create([
+        $notice = Notice::create([
             'fk_user_id' => $request->user_id,
-            'fk_type_message_id' => $request->type_id,
             'fk_location_id' => $request->location_id,
-            'subject' => $request->subject,
+            'expired' => $request->expired,
+            'tittle' => $request->tittle,
             'body' => $request->body
         ]);
+            //falta guardar archivo si es que se envia
+            // //imagenes storage
+            // $img   = $request->file('file');
+            // $extention = strtolower($img->getClientOriginalExtension());
+            // $filename  = strtolower(str_replace(" ","_","named")).'.'.$extention;
+            // Storage::disk('data')->put($filename,  File::get($img));
+            //     foreach($request->file('files') as $uploadedFile){
+            //         $filename = time() . '_' . $uploadedFile->getClientOriginalName();
+            //          $path = $uploadedFile->store($filename, 'uploads');
+            //          $fileStore = new FileStore();
+            //          $fileStore->file_id = $notice->id;
+            //          $fileStore->name = $uploadedFile->getClientOriginalName();
+            //          $fileStore->path = $path;
+            //          $fileStore->save();
+            //   }
 
-        return response()->json($message, 201);
+        return response()->json($notice, 201);
     }
 
     /**
      * @OA\Put(
-     * path="/api/v1/message",
-     * summary="Modificar un ticket",
-     * description="Modificar un ticket (con Token)",
-     * operationId="TicketsUpdate",
-     * tags={"Tickets"},
+     * path="/api/v1/notice",
+     * summary="Modificar una Noticia",
+     * description="Modificar una Noticia (con Token)",
+     * operationId="NoticeUpdate",
+     * tags={"Notice"},
      * @OA\RequestBody(
      *    required=true,
-     *    description="Datos del Ticket",
+     *    description="Datos del Noticia",
      *    @OA\JsonContent(
      *       required={"id"},
      *       @OA\Property(property="id", type="int", format="number", example=1),
-     *       @OA\Property(property="user_id", type="int", format="number", example=1),
-     *       @OA\Property(property="type_id", type="int", format="number", example=1),
-     *       @OA\Property(property="location_id", type="int", format="number", example=1),
-     *       @OA\Property(property="opened", type="boolean", format="number", example=1),
-     *       @OA\Property(property="subject", type="string", format="text", example="Alerta Covid"),
-     *       @OA\Property(property="body", type="string", format="text", example="Mi vecino tiene covid"),
+     *       @OA\Property(property="tittle", type="string", format="text", example="Se habilito una nueva seccion del gimnacio X"),
+     *       @OA\Property(property="body", type="string", format="text", example="Nuevo gimnasio"),
      *    ),
      * ),
      * @OA\Response(
@@ -135,12 +142,11 @@ class MessageController extends Controller
      *        @OA\Property(
      *           property="objMessage",
      *           type="object",
-     *          @OA\Property(property="body", type="string", format="text", example="Mi vecino tiene covid"),
-     *          @OA\Property(property="subject", type="string", format="text", example="Alerta Covid"),
-     *          @OA\Property(property="location_id", type="string", format="text", example=1),
-     *          @OA\Property(property="type_id", type="string", format="text", example=1),
-     *          @OA\Property(property="user_id", type="string", format="text", example=1),
-     *          @OA\Property(property="opened", type="boolean", format="number", example=1),
+     *          @OA\Property(property="tittle", type="string", format="text", example="Nuevo gimnasio"),
+     *          @OA\Property(property="body", type="string", format="text", example="Se habilito una nueva seccion del gimnacio X"),
+     *          @OA\Property(property="expired", type="string", format="date", example="2021-01-18T15:31:11.000000Z"),
+     *          @OA\Property(property="location_id", type="integer", format="number", example=1),
+     *          @OA\Property(property="user_id", type="integer", format="number", example=1),
      *          @OA\Property(property="updated_at", type="string", format="date", example="2021-01-18T15:31:11.000000Z"),
      *          @OA\Property(property="created_at", type="string", format="date", example="2021-01-18T15:31:11.000000Z"),
      *          @OA\Property(property="id", type="int", format="number", example=2),
@@ -177,22 +183,22 @@ class MessageController extends Controller
 
         try {
             $obj = $request->all();
-            $message = Message::find($request->id);
-            if ($message) {
+            $notice = Notice::find($request->id);
+            if ($notice) {
                 foreach ($obj as $key => $value)
                 {
                     if($value != "id"){
 
-                        $message->$key = $value;
+                        $notice->$key = $value;
 
                     }
                 }
-                $message->save();
+                $notice->save();
 
-                return response()->json($message, 200);
+                return response()->json($notice, 200);
 
             } else {
-                return response()->json(['type' => 'data' , 'error' => 'id '.$request->id.' message not exists'], 422);
+                return response()->json(['type' => 'data' , 'error' => 'id '.$request->id.' notice not exists'], 422);
 
             }
         } catch (\Exception $th) {
@@ -203,11 +209,11 @@ class MessageController extends Controller
 
     /**
      * @OA\Get(
-     * path="/api/v1/message",
-     * summary="Listar los tickets",
-     * description="Listar los tickets (con Token)",
-     * operationId="TicketsGet",
-     * tags={"Tickets"},
+     * path="/api/v1/notice",
+     * summary="Listar las Noticias",
+     * description="Listar las Noticias (con Token)",
+     * operationId="NoticeGet",
+     * tags={"Notice"},
      * @OA\Response(
      *    response=200,
      *    description="Ok",
@@ -229,46 +235,9 @@ class MessageController extends Controller
 
     public function show(){
 
-        $messages = Message::leftJoin('users','users.id','=','messages.fk_user_id')
-        ->leftJoin('type_messages','type_messages.id','=','messages.fk_type_message_id')
-        ->leftJoin('locations','locations.id','=','messages.fk_location_id')
-        ->where('messages.opened',1)
+        $notices = Notice::leftJoin('file_stores','file_stores.id','=','notices.fk_file_store_id')
         ->get();
 
-        return response()->json($messages, 200);
+        return response()->json($notices, 200);
     }
-
-    /**
-     * @OA\Get(
-     * path="/api/v1/message/type",
-     * summary="Listar los tipos de tickets",
-     * description="Listar los tipos de tickets (con Token)",
-     * operationId="TicketsGetHistory",
-     * tags={"Tickets"},
-     * @OA\Response(
-     *    response=200,
-     *    description="Ok",
-     *    @OA\JsonContent(
-     *       @OA\Property(property="message", type="string", example="Ok"),
-     *       @OA\Property(property="obj", type="string", example="array()"),
-     *        )
-     *     ),
-     * @OA\Response(
-     *    response=401,
-     *    description="Error: Unauthorized",
-     *    @OA\JsonContent(
-     *       @OA\Property(property="error", type="string", example="Unauthenticated"),
-     *        )
-     *     ),
-     *  security={{ "apiAuth": {} }}
-     * )
-     */
-
-    public function type(){
-
-        $typeMessages = TypeMessage::all();
-
-        return response()->json($typeMessages, 200);
-    }
-
 }

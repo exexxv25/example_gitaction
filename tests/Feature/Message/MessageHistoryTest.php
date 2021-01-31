@@ -13,11 +13,10 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class MessageHistoryTest extends TestCase
 {
     /**
-     * A basic feature test example.
-     *
-     * @return void
+     * @group messagehistory
+     * @test
      */
-    public function test_example()
+    public function MessageHistoryTest()
     {
 
         if (! User::where('email', 'admin@neighbors.com.ar')->exists()) {

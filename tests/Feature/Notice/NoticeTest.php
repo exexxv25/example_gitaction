@@ -1,20 +1,23 @@
 <?php
 
-namespace Tests\Feature\Message;
+namespace Tests\Feature\Notice;
 
 use Tests\TestCase;
 use App\Models\User;
-use App\Models\Message;
+use App\Models\Notice;
+use Carbon\Carbon;
+use Faker\Factory as Faker;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class MessageTest extends TestCase
+class NoticeTest extends TestCase
 {
     /**
-     * @group message
+     * @group notice
      * @test
      */
-    public function MessageTest()
+    public function NoticeTest()
     {
 
         if (! User::where('email', 'admin@neighbors.com.ar')->exists()) {
@@ -32,47 +35,42 @@ class MessageTest extends TestCase
                 'access_token' => true,
             ]);
 
-        $response = $this->postJson('/api/v1/message', [
+        $response = $this->postJson('/api/v1/notice', [
             'user_id' => 1,
-            'type_id' => 1,
             'location_id' => 1,
-            'subject' => "Alerta Covid",
-            'body' => "Mi vecino tiene covid",
+            'body' => "Se habilito un nuevo ginmasio",
+            'tittle' => "Nuevo gimnasio",
+            'expired' => Carbon::today()->toDateString()
             ]);
 
         $response
             ->assertStatus(201)
             ->assertJson([
-                'subject' => true,
+                'tittle' => true,
             ]);
 
         $data = json_decode($response->getContent());
 
-        $response = $this->putJson('/api/v1/message', [
+        $version = mt_rand();
+
+        $response = $this->putJson('/api/v1/notice', [
             'id' => $data->id,
-            'subject' => "Alerta Covid V2",
-            'body' => "Mi vecino tiene covid V2",
+            'body' => "Se habilito una nueva seccion del gimnacio X",
             ]);
 
         $response
             ->assertStatus(200)
             ->assertJson([
-                'id' => true,
+                'body' => true,
             ]);
 
-        $response = $this->getJson('/api/v1/message/type', [
-            ]);
-
-        $response
-            ->assertStatus(200);
-
-        $response = $this->getJson('/api/v1/message', [
+        $response = $this->getJson('/api/v1/notice', [
             ]);
 
         $response
             ->assertStatus(200);
 
 
-        Message::find($data->id)->delete();
+        Notice::find($data->id)->delete();
     }
 }

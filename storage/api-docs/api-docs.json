@@ -323,6 +323,322 @@
                 ]
             }
         },
+        "/api/v1/document": {
+            "get": {
+                "tags": [
+                    "Documents"
+                ],
+                "summary": "Listar los documentos",
+                "description": "Listar los documentos (con Token)",
+                "operationId": "DocumentsGet",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ok"
+                                        },
+                                        "obj": {
+                                            "type": "string",
+                                            "example": "array()"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Error: Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Documents"
+                ],
+                "summary": "Modificar un Documento",
+                "description": "Modificar un Documento (con Token)",
+                "operationId": "DocumentsUpdate",
+                "requestBody": {
+                    "description": "Datos del Documento",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": 1
+                                    },
+                                    "body": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "Reglamento vecinosV2"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Message successfully updated"
+                                        },
+                                        "objMessage": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "Reglamento vecinosV2"
+                                                },
+                                                "location_id": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": 1
+                                                },
+                                                "user_id": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": 1
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2021-01-18T15:31:11.000000Z"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2021-01-18T15:31:11.000000Z"
+                                                },
+                                                "id": {
+                                                    "type": "int",
+                                                    "format": "number",
+                                                    "example": 2
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Wrong credentials response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "example": "The id field is required."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Documents"
+                ],
+                "summary": "Generar un Documento",
+                "description": "Generar un Documento (con Token)",
+                "operationId": "DocumentsCreate",
+                "requestBody": {
+                    "description": "Datos del Documento",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "location_id",
+                                    "name"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": 1
+                                    },
+                                    "location_id": {
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": 1
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "Reglamento vecinos"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Message successfully registered"
+                                        },
+                                        "objMessage": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "Reglamento vecinos"
+                                                },
+                                                "location_id": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": 1
+                                                },
+                                                "user_id": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": 1
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2021-01-18T15:31:11.000000Z"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2021-01-18T15:31:11.000000Z"
+                                                },
+                                                "id": {
+                                                    "type": "int",
+                                                    "format": "number",
+                                                    "example": 2
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Wrong credentials response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user_id": {
+                                            "type": "number",
+                                            "example": "The user_id field is required."
+                                        },
+                                        "location_id": {
+                                            "type": "number",
+                                            "example": "The location_id field is required."
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "The name field is required."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/location": {
             "get": {
                 "tags": [
@@ -859,8 +1175,8 @@
                 "tags": [
                     "Tickets"
                 ],
-                "summary": "Generar un ticker",
-                "description": "Generar un ticker (con Token)",
+                "summary": "Generar un ticket",
+                "description": "Generar un ticket (con Token)",
                 "operationId": "TicketsCreate",
                 "requestBody": {
                     "description": "Datos del Ticket",
@@ -1383,6 +1699,359 @@
                                         "message_history_id": {
                                             "type": "number",
                                             "example": "The message_history_id field is required."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/notice": {
+            "get": {
+                "tags": [
+                    "Notice"
+                ],
+                "summary": "Listar las Noticias",
+                "description": "Listar las Noticias (con Token)",
+                "operationId": "NoticeGet",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ok"
+                                        },
+                                        "obj": {
+                                            "type": "string",
+                                            "example": "array()"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Error: Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Notice"
+                ],
+                "summary": "Modificar una Noticia",
+                "description": "Modificar una Noticia (con Token)",
+                "operationId": "NoticeUpdate",
+                "requestBody": {
+                    "description": "Datos del Noticia",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": 1
+                                    },
+                                    "tittle": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "Se habilito una nueva seccion del gimnacio X"
+                                    },
+                                    "body": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "Nuevo gimnasio"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Message successfully updated"
+                                        },
+                                        "objMessage": {
+                                            "properties": {
+                                                "tittle": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "Nuevo gimnasio"
+                                                },
+                                                "body": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "Se habilito una nueva seccion del gimnacio X"
+                                                },
+                                                "expired": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2021-01-18T15:31:11.000000Z"
+                                                },
+                                                "location_id": {
+                                                    "type": "integer",
+                                                    "format": "number",
+                                                    "example": 1
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "format": "number",
+                                                    "example": 1
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2021-01-18T15:31:11.000000Z"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2021-01-18T15:31:11.000000Z"
+                                                },
+                                                "id": {
+                                                    "type": "int",
+                                                    "format": "number",
+                                                    "example": 2
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Wrong credentials response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "example": "The id field is required."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Notice"
+                ],
+                "summary": "Generar una Noticia",
+                "description": "Generar una Noticia (con Token)",
+                "operationId": "NoticeCreate",
+                "requestBody": {
+                    "description": "Datos de la Noticia",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "location_id",
+                                    "expired",
+                                    "tittle",
+                                    "body"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": 1
+                                    },
+                                    "location_id": {
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": 1
+                                    },
+                                    "expired": {
+                                        "type": "string",
+                                        "format": "datetime",
+                                        "example": "2021-01-18T15:31:11.000000Z"
+                                    },
+                                    "tittle": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "Nuevo gimnasio"
+                                    },
+                                    "body": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "Se habilito un nuevo ginmasio"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Message successfully registered"
+                                        },
+                                        "objMessage": {
+                                            "properties": {
+                                                "tittle": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "Nuevo gimnasio"
+                                                },
+                                                "body": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "Se habilito un nuevo ginmasio"
+                                                },
+                                                "expired": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2021-01-18T15:31:11.000000Z"
+                                                },
+                                                "location_id": {
+                                                    "type": "integer",
+                                                    "format": "number",
+                                                    "example": 1
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "format": "number",
+                                                    "example": 1
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2021-01-18T15:31:11.000000Z"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2021-01-18T15:31:11.000000Z"
+                                                },
+                                                "id": {
+                                                    "type": "int",
+                                                    "format": "number",
+                                                    "example": 2
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Wrong credentials response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user_id": {
+                                            "type": "number",
+                                            "example": "The user_id field is required."
+                                        },
+                                        "location_id": {
+                                            "type": "number",
+                                            "example": "The location_id field is required."
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "The name field is required."
                                         }
                                     },
                                     "type": "object"
