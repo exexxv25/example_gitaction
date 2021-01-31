@@ -1,4 +1,4 @@
-name: CI_CD Laravel
+name: CI_CD Laravel Dev
 on:
   push:
     branches: [ develop ]
