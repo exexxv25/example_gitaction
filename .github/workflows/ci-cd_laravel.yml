@@ -29,10 +29,7 @@ jobs:
 
       - name: Install Composer Dependencies
         run: |
-          composer update
           chmod -R 777 storage bootstrap/cache
-          npm install
-          npm run production
 
       - name: PHP syntax checker
         uses: prestashop/github-action-php-lint/7.4@master
