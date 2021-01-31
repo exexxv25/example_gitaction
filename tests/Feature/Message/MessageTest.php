@@ -11,11 +11,10 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class MessageTest extends TestCase
 {
     /**
-     * A basic feature test example.
-     *
-     * @return void
+     * @group message
+     * @test
      */
-    public function test_example()
+    public function MessageTest()
     {
 
         if (! User::where('email', 'admin@neighbors.com.ar')->exists()) {

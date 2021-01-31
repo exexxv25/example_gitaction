@@ -13,11 +13,10 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class LocationTest extends TestCase
 {
     /**
-     * A basic feature test example.
-     *
-     * @return void
+     * @group location
+     * @test
      */
-    public function test_example()
+    public function LocationTest()
     {
 
         if (! User::where('email', 'admin@neighbors.com.ar')->exists()) {

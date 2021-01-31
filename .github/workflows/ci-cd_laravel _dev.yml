@@ -1,0 +1,55 @@
+name: CI_CD Laravel Dev
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+jobs:
+
+  dev-test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mariadb:10.2
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: dusk
+        ports:
+          - 33306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
+      - name: Prepare The Environment
+        run: cp .env.ci .env
+
+      - name: Install Composer Dependencies
+        run: |
+          chmod -R 777 storage bootstrap/cache
+
+      - name: PHP syntax checker
+        uses: prestashop/github-action-php-lint/7.4@master
+        with:
+          folder-to-exclude: "! -path \"./vendor/*\" ! -path \"./customer/folder/excluded/*\""
+
+      - name: Run Tests
+        run: |
+          php artisan serve > /dev/null 2>&1 &
+          composer dump-autoload
+          chmod -R 0755 vendor/laravel/dusk/bin/
+          php artisan migrate
+          php artisan test
+        env:
+          APP_ENV: local
+          APP_URL: "http://127.0.0.1:8000"
+          DB_CONNECTION: mysql
+          DB_DATABASE: dusk
+          DB_PORT: 33306
+          DB_USER: root
+
