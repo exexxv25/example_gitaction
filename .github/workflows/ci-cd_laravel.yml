@@ -1,9 +1,9 @@
 name: CI_CD Laravel
 on:
   push:
-    branches: [ master ]
-  pull_request:
     branches: [ testing ]
+  pull_request:
+    branches: [ develop ]
 jobs:
 
   test-php:
