@@ -42,6 +42,7 @@ jobs:
       - name: Run Tests
         run: |
           php artisan serve > /dev/null 2>&1 &
+          composer dump-autoload
           chmod -R 0755 vendor/laravel/dusk/bin/
           php artisan migrate
           php artisan test
