@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
+use GuzzleHttp\Client;
 use App\Models\Location;
 use Illuminate\Http\Request;
-use Validator;
 
 class LocationController extends Controller
 {
 
+    public $http;
+
     public function __construct(Request $request)
     {
         $this->middleware('auth:api');
+        $this->http = new Client();
+
     }
 
     /**
@@ -212,4 +217,107 @@ class LocationController extends Controller
         }
     }
 
+
+    /**
+     * @OA\Get(
+     * path="/api/v1/location/state",
+     * summary="Listar las provincias",
+     * description="Listar las provincias (con Token)",
+     * operationId="LocationsGet",
+     * tags={"Provincias"},
+     * @OA\Response(
+     *    response=200,
+     *    description="Ok",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="Ok"),
+     *       @OA\Property(property="obj", type="string", example="array()"),
+     *        )
+     *     ),
+     * @OA\Response(
+     *    response=401,
+     *    description="Error: Unauthorized",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="error", type="string", example="Unauthenticated"),
+     *        )
+     *     ),
+     *  security={{ "apiAuth": {} }}
+     * )
+     */
+
+    public function estateArg(){
+
+        $state = $this->http->get('https://apis.datos.gob.ar/georef/api/provincias');
+
+        try {
+
+            $state = json_decode($state->getBody());
+
+            return response()->json($state, 200);
+
+        }catch (\Exception $e) {
+
+            return response()->json(['type' => 'http' , 'error' =>json_encode($e->getMessage())],422);
+
+        }
+
+    }
+
+
+    /**
+     * @OA\Get(
+     * path="/api/v1/location/district/{state_id}",
+     * summary="Listar de localidades",
+     * description="Listar de localidades (con Token)",
+     * operationId="LocationsGet",
+     * tags={"Localidades"},
+     * @OA\Parameter(
+     *         description="ID del mensaje",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(
+     *             format="int64",
+     *             type="integer"
+     *         )
+     *      ),
+     * @OA\Response(
+     *    response=200,
+     *    description="Ok",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="Ok"),
+     *       @OA\Property(property="obj", type="string", example="array()"),
+     *        )
+     *     ),
+     * @OA\Response(
+     *    response=401,
+     *    description="Error: Unauthorized",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="error", type="string", example="Unauthenticated"),
+     *        )
+     *     ),
+     *  security={{ "apiAuth": {} }}
+     * )
+     */
+
+    public function districtArg($state_id = null){
+
+        if (is_null($state_id)) {
+            return response()->json(['type' => 'data' , 'error' => "EL Id es requerido"], 422);
+        }
+
+        try {
+
+            $district = $this->http->get("https://apis.datos.gob.ar/georef/api/municipios?provincia=$state_id&max=5000");
+
+            $district = json_decode($district->getBody());
+
+            return response()->json($district, 200);
+
+        }catch (\Exception $e) {
+
+            return response()->json(['type' => 'http' , 'error' =>json_encode($e->getMessage())],422);
+
+        }
+
+    }
 }

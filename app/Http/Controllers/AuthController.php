@@ -49,8 +49,8 @@ class AuthController extends Controller
      *    description="Pass user credentials",
      *    @OA\JsonContent(
      *       required={"email","password"},
-     *       @OA\Property(property="email", type="string", format="email", example="admin@neighbors.com.ar"),
-     *       @OA\Property(property="password", type="string", format="password", example="neighbors3212021"),
+     *       @OA\Property(property="email", type="string", format="email", example="admin@neighbors.com"),
+     *       @OA\Property(property="password", type="string", format="password", example="123456"),
      *    ),
      * ),
      * @OA\Response(
@@ -59,8 +59,55 @@ class AuthController extends Controller
      *    @OA\JsonContent(
      *       @OA\Property(property="access_token", type="string", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6NjA5MFwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MTA5ODc0MDIsImV4cCI6MTYxMDk5MTAwMiwibmJmIjoxNjEwOTg3NDAyLCJqdGkiOiJlUXlTTzN2ZnVmY0UzS0F6Iiwic3ViIjoxLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.HE5tmEaJ57_Z-PAgq9kTTQIvT_w7ycd-Hrtmez9YI2g"),
      *       @OA\Property(property="token_type", type="string", example="bearer"),
-     *       @OA\Property(property="expires_in", type="int", example=3600)
-     *        )
+     *       @OA\Property(property="ok", type="string", example="true"),
+     *       @OA\Property(property="expires_in", type="int", example=3600),
+     *        @OA\Property(
+     *           property="(obj)usuario",
+     *           type="object",
+     *          @OA\Property(property="habilitado", type="string", format="boolean", example="1"),
+     *          @OA\Property(property="nombre", type="string", format="text", example="adminNombre"),
+     *          @OA\Property(property="apellido", type="string", format="text", example="adminApellido"),
+     *          @OA\Property(property="dni", type="int", format="number", example="87654321"),
+     *          @OA\Property(property="telefono", type="int", format="number", example="12345678"),
+     *          @OA\Property(property="email", type="string", format="text", example="admin@neighbors.com"),
+     *          @OA\Property(property="img", type="string", format="text", example="mi_foto.jpg"),
+     *          @OA\Property(property="uid", type="string", format="text", example="HQ21SD1R1F8S"),
+     *          @OA\Property(property="updated_at", type="string", format="date", example="2021-01-18T15:31:11.000000Z"),
+     *          @OA\Property(property="created_at", type="string", format="date", example="2021-01-18T15:31:11.000000Z"),
+     *          @OA\Property(property="id", type="int", format="number", example=2),
+     *        @OA\Property(
+     *           property="role",
+     *           type="object",
+     *          @OA\Property(property="0", type="string", format="boolean", example="ADMIN_ROL")
+     *          ),
+     *        @OA\Property(
+     *           property="(array)permisos",
+     *           type="object",
+     *              @OA\Property(
+     *                  property="(array)VECINO_ROL",
+     *                  type="object",
+     *                  @OA\Property(
+     *                      property="dashboard",
+     *                      type="object",
+     *                      @OA\Property(property="0", type="string", format="text", example="read")
+     *          ),
+     *          ),
+     *          ),
+     *        @OA\Property(
+     *           property="(array)barrios",
+     *           type="object",
+     *          @OA\Property(property="id_barrio", type="int", format="number", example="1"),
+     *          @OA\Property(property="nombre_barrio", type="string", format="text", example="Jake O'Keefe")
+     *          ),
+     *        @OA\Property(
+     *           property="(array)viviendas",
+     *           type="object",
+     *          @OA\Property(property="id_lote", type="string", format="text", example="1"),
+     *          @OA\Property(property="nombre_lote", type="string", format="text", example="miloteEjemplo1"),
+     *          @OA\Property(property="nombre_barrio", type="string", format="text", example="Jake O'Keefe")
+     *          ),
+     *          ),
+     *        ),
      *     ),
      * @OA\Response(
      *    response=401,
@@ -225,7 +272,53 @@ class AuthController extends Controller
      *    @OA\JsonContent(
      *       @OA\Property(property="access_token", type="string", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6NjA5MFwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MTA5ODc0MDIsImV4cCI6MTYxMDk5MTAwMiwibmJmIjoxNjEwOTg3NDAyLCJqdGkiOiJlUXlTTzN2ZnVmY0UzS0F6Iiwic3ViIjoxLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.HE5tmEaJ57_Z-PAgq9kTTQIvT_w7ycd-Hrtmez9YI2g"),
      *       @OA\Property(property="token_type", type="string", example="bearer"),
-     *       @OA\Property(property="expires_in", type="int", example=3600)
+     *       @OA\Property(property="expires_in", type="int", example=3600),
+     *        @OA\Property(
+     *           property="(obj)usuario",
+     *           type="object",
+     *          @OA\Property(property="habilitado", type="string", format="boolean", example="1"),
+     *          @OA\Property(property="nombre", type="string", format="text", example="adminNombre"),
+     *          @OA\Property(property="apellido", type="string", format="text", example="adminApellido"),
+     *          @OA\Property(property="dni", type="int", format="number", example="87654321"),
+     *          @OA\Property(property="telefono", type="int", format="number", example="12345678"),
+     *          @OA\Property(property="email", type="string", format="text", example="admin@neighbors.com"),
+     *          @OA\Property(property="img", type="string", format="text", example="mi_foto.jpg"),
+     *          @OA\Property(property="uid", type="string", format="text", example="HQ21SD1R1F8S"),
+     *          @OA\Property(property="updated_at", type="string", format="date", example="2021-01-18T15:31:11.000000Z"),
+     *          @OA\Property(property="created_at", type="string", format="date", example="2021-01-18T15:31:11.000000Z"),
+     *          @OA\Property(property="id", type="int", format="number", example=2),
+     *        @OA\Property(
+     *           property="role",
+     *           type="object",
+     *          @OA\Property(property="0", type="string", format="boolean", example="ADMIN_ROL")
+     *          ),
+     *        @OA\Property(
+     *           property="(array)permisos",
+     *           type="object",
+     *              @OA\Property(
+     *                  property="(array)VECINO_ROL",
+     *                  type="object",
+     *                  @OA\Property(
+     *                      property="dashboard",
+     *                      type="object",
+     *                      @OA\Property(property="0", type="string", format="text", example="read")
+     *          ),
+     *          ),
+     *          ),
+     *        @OA\Property(
+     *           property="(array)barrios",
+     *           type="object",
+     *          @OA\Property(property="id_barrio", type="int", format="number", example="1"),
+     *          @OA\Property(property="nombre_barrio", type="string", format="text", example="Jake O'Keefe")
+     *          ),
+     *        @OA\Property(
+     *           property="(array)viviendas",
+     *           type="object",
+     *          @OA\Property(property="id_lote", type="string", format="text", example="1"),
+     *          @OA\Property(property="nombre_lote", type="string", format="text", example="miloteEjemplo1"),
+     *          @OA\Property(property="nombre_barrio", type="string", format="text", example="Jake O'Keefe")
+     *          ),
+     *          ),
      *        )
      *     ),
      * @OA\Response(
@@ -262,11 +355,13 @@ class AuthController extends Controller
      */
     protected function createNewToken($token)
     {
+
         return response()->json([
+            'ok' => true,
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
-            // 'user' => auth()->user()
+            'usuario' => User::dataEs(auth()->user())
         ]);
     }
 }

@@ -232,8 +232,10 @@ class MessageController extends Controller
         $messages = Message::leftJoin('users','users.id','=','messages.fk_user_id')
         ->leftJoin('type_messages','type_messages.id','=','messages.fk_type_message_id')
         ->leftJoin('locations','locations.id','=','messages.fk_location_id')
-        ->where('messages.opened',1)
-        ->get();
+        ->whereOpened(1)
+        ->get([
+            'messages.*'
+        ]);
 
         return response()->json($messages, 200);
     }

@@ -144,7 +144,7 @@ class NoticeController extends Controller
      *           type="object",
      *          @OA\Property(property="tittle", type="string", format="text", example="Nuevo gimnasio"),
      *          @OA\Property(property="body", type="string", format="text", example="Se habilito una nueva seccion del gimnacio X"),
-     *          @OA\Property(property="expired", type="string", format="date", example="2021-01-18T15:31:11.000000Z"),
+     *          @OA\Property(property="expired", type="string", format="date", example="2021-01-18"),
      *          @OA\Property(property="location_id", type="integer", format="number", example=1),
      *          @OA\Property(property="user_id", type="integer", format="number", example=1),
      *          @OA\Property(property="updated_at", type="string", format="date", example="2021-01-18T15:31:11.000000Z"),
@@ -236,7 +236,9 @@ class NoticeController extends Controller
     public function show(){
 
         $notices = Notice::leftJoin('file_stores','file_stores.id','=','notices.fk_file_store_id')
-        ->get();
+        ->get([
+            'notices.*',
+        ]);
 
         return response()->json($notices, 200);
     }

@@ -27,12 +27,12 @@
                                     "email": {
                                         "type": "string",
                                         "format": "email",
-                                        "example": "admin@neighbors.com.ar"
+                                        "example": "admin@neighbors.com"
                                     },
                                     "password": {
                                         "type": "string",
                                         "format": "password",
-                                        "example": "neighbors3212021"
+                                        "example": "123456"
                                     }
                                 },
                                 "type": "object"
@@ -55,9 +55,138 @@
                                             "type": "string",
                                             "example": "bearer"
                                         },
+                                        "ok": {
+                                            "type": "string",
+                                            "example": "true"
+                                        },
                                         "expires_in": {
                                             "type": "int",
                                             "example": 3600
+                                        },
+                                        "(obj)usuario": {
+                                            "properties": {
+                                                "habilitado": {
+                                                    "type": "string",
+                                                    "format": "boolean",
+                                                    "example": "1"
+                                                },
+                                                "nombre": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "adminNombre"
+                                                },
+                                                "apellido": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "adminApellido"
+                                                },
+                                                "dni": {
+                                                    "type": "int",
+                                                    "format": "number",
+                                                    "example": "87654321"
+                                                },
+                                                "telefono": {
+                                                    "type": "int",
+                                                    "format": "number",
+                                                    "example": "12345678"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "admin@neighbors.com"
+                                                },
+                                                "img": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "mi_foto.jpg"
+                                                },
+                                                "uid": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "HQ21SD1R1F8S"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2021-01-18T15:31:11.000000Z"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2021-01-18T15:31:11.000000Z"
+                                                },
+                                                "id": {
+                                                    "type": "int",
+                                                    "format": "number",
+                                                    "example": 2
+                                                },
+                                                "role": {
+                                                    "properties": {
+                                                        "0": {
+                                                            "type": "string",
+                                                            "format": "boolean",
+                                                            "example": "ADMIN_ROL"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "(array)permisos": {
+                                                    "properties": {
+                                                        "(array)VECINO_ROL": {
+                                                            "properties": {
+                                                                "dashboard": {
+                                                                    "properties": {
+                                                                        "0": {
+                                                                            "type": "string",
+                                                                            "format": "text",
+                                                                            "example": "read"
+                                                                        }
+                                                                    },
+                                                                    "type": "object"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "(array)barrios": {
+                                                    "properties": {
+                                                        "id_barrio": {
+                                                            "type": "int",
+                                                            "format": "number",
+                                                            "example": "1"
+                                                        },
+                                                        "nombre_barrio": {
+                                                            "type": "string",
+                                                            "format": "text",
+                                                            "example": "Jake O'Keefe"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "(array)viviendas": {
+                                                    "properties": {
+                                                        "id_lote": {
+                                                            "type": "string",
+                                                            "format": "text",
+                                                            "example": "1"
+                                                        },
+                                                        "nombre_lote": {
+                                                            "type": "string",
+                                                            "format": "text",
+                                                            "example": "miloteEjemplo1"
+                                                        },
+                                                        "nombre_barrio": {
+                                                            "type": "string",
+                                                            "format": "text",
+                                                            "example": "Jake O'Keefe"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
                                         }
                                     },
                                     "type": "object"
@@ -292,6 +421,131 @@
                                         "expires_in": {
                                             "type": "int",
                                             "example": 3600
+                                        },
+                                        "(obj)usuario": {
+                                            "properties": {
+                                                "habilitado": {
+                                                    "type": "string",
+                                                    "format": "boolean",
+                                                    "example": "1"
+                                                },
+                                                "nombre": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "adminNombre"
+                                                },
+                                                "apellido": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "adminApellido"
+                                                },
+                                                "dni": {
+                                                    "type": "int",
+                                                    "format": "number",
+                                                    "example": "87654321"
+                                                },
+                                                "telefono": {
+                                                    "type": "int",
+                                                    "format": "number",
+                                                    "example": "12345678"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "admin@neighbors.com"
+                                                },
+                                                "img": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "mi_foto.jpg"
+                                                },
+                                                "uid": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "HQ21SD1R1F8S"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2021-01-18T15:31:11.000000Z"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2021-01-18T15:31:11.000000Z"
+                                                },
+                                                "id": {
+                                                    "type": "int",
+                                                    "format": "number",
+                                                    "example": 2
+                                                },
+                                                "role": {
+                                                    "properties": {
+                                                        "0": {
+                                                            "type": "string",
+                                                            "format": "boolean",
+                                                            "example": "ADMIN_ROL"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "(array)permisos": {
+                                                    "properties": {
+                                                        "(array)VECINO_ROL": {
+                                                            "properties": {
+                                                                "dashboard": {
+                                                                    "properties": {
+                                                                        "0": {
+                                                                            "type": "string",
+                                                                            "format": "text",
+                                                                            "example": "read"
+                                                                        }
+                                                                    },
+                                                                    "type": "object"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "(array)barrios": {
+                                                    "properties": {
+                                                        "id_barrio": {
+                                                            "type": "int",
+                                                            "format": "number",
+                                                            "example": "1"
+                                                        },
+                                                        "nombre_barrio": {
+                                                            "type": "string",
+                                                            "format": "text",
+                                                            "example": "Jake O'Keefe"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "(array)viviendas": {
+                                                    "properties": {
+                                                        "id_lote": {
+                                                            "type": "string",
+                                                            "format": "text",
+                                                            "example": "1"
+                                                        },
+                                                        "nombre_lote": {
+                                                            "type": "string",
+                                                            "format": "text",
+                                                            "example": "miloteEjemplo1"
+                                                        },
+                                                        "nombre_barrio": {
+                                                            "type": "string",
+                                                            "format": "text",
+                                                            "example": "Jake O'Keefe"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
                                         }
                                     },
                                     "type": "object"
@@ -955,6 +1209,124 @@
                 ]
             }
         },
+        "/api/v1/location/state": {
+            "get": {
+                "tags": [
+                    "Provincias"
+                ],
+                "summary": "Listar las provincias",
+                "description": "Listar las provincias (con Token)",
+                "operationId": "LocationsGet",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ok"
+                                        },
+                                        "obj": {
+                                            "type": "string",
+                                            "example": "array()"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Error: Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/location/district/{state_id}": {
+            "get": {
+                "tags": [
+                    "Localidades"
+                ],
+                "summary": "Listar de localidades",
+                "description": "Listar de localidades (con Token)",
+                "operationId": "LocationsGet",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del mensaje",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ok"
+                                        },
+                                        "obj": {
+                                            "type": "string",
+                                            "example": "array()"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Error: Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/message": {
             "get": {
                 "tags": [
@@ -1535,7 +1907,7 @@
                 ]
             }
         },
-        "/api/v1/history/message/all/1": {
+        "/api/v1/history/message/all/{id}": {
             "get": {
                 "tags": [
                     "Tickets - Mensajes"
@@ -1543,6 +1915,18 @@
                 "summary": "Historial de respuestas de un ticker",
                 "description": "Historial de respuestas de un ticker (con Token)",
                 "operationId": "TicketsHisGet",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del mensaje",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Ok",
@@ -1830,7 +2214,7 @@
                                                 "expired": {
                                                     "type": "string",
                                                     "format": "date",
-                                                    "example": "2021-01-18T15:31:11.000000Z"
+                                                    "example": "2021-01-18"
                                                 },
                                                 "location_id": {
                                                     "type": "integer",

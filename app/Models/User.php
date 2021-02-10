@@ -60,4 +60,26 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    public static function dataEs($user = null){
+
+        $user?? $user = auth()->user();
+
+        return (object)[
+            'id' => $user->id,
+            'role' => Rol::myRols($user),
+            'permisos' => RolFlow::dataEs($user),
+            'viviendas' => LotUser::dataEs($user->id),
+            'barrios' => LocationUser::dataEs($user->id),
+            'habilitado' => $user->allow,
+            'nombre' => $user->name,
+            'apellido' => $user->lastname,
+            'dni' => $user->passport,
+            'telefono' => $user->phone,
+            'email' => $user->email,
+            'img' => $user->avatar,
+            'uid' => bin2hex(random_bytes(20))
+        ];
+
+    }
 }

@@ -38,6 +38,8 @@ Route::group([
 
 ], function ($router) {
 
+    Route::get('/location/district/{state_id?}', [LocationController::class, 'districtArg']);
+    Route::get('/location/state', [LocationController::class, 'estateArg']);
     Route::get('/location', [LocationController::class, 'show']);
     Route::post('/location', [LocationController::class, 'store']);
     Route::put('/location', [LocationController::class, 'update']);
@@ -64,3 +66,9 @@ Route::group([
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/block', function () {
+
+    return response()->json(['type' => 'data' , 'error' => "Unauthorized"], 401);
+
+})->name('block');
