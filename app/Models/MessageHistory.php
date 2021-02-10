@@ -40,7 +40,11 @@ class MessageHistory extends Model
 
                     $messageHistory[0]["type"] = "odd";
                     $messageHistory[0]["avatar"] = auth()->user()->avatar;
+                }
 
+                if(!isset($messageHistory[0]["messageResponse"])){
+
+                    $messageHistory[0]["messageResponse"] = [];
                 }
 
                 array_push($messageHistory[0]["messageResponse"],array(
@@ -49,12 +53,16 @@ class MessageHistory extends Model
                 ));
 
             }else{
-
                 if(!isset($messageHistory[1]["type"])){
 
                     $messageHistory[1]["type"] = "even";
                     $messageHistory[1]["avatar"] = User::find($value->fk_user_id)->avatar;
 
+                }
+
+                if(!isset($messageHistory[1]["messageResponse"])){
+
+                    $messageHistory[1]["messageResponse"] = [];
                 }
 
                 array_push($messageHistory[1]["messageResponse"],array(
