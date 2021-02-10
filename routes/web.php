@@ -3,8 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MessageHistoryController;
+use App\Http\Controllers\NoticeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,9 +38,19 @@ Route::group([
 
 ], function ($router) {
 
+    Route::get('/location/district/{state_id?}', [LocationController::class, 'districtArg']);
+    Route::get('/location/state', [LocationController::class, 'estateArg']);
     Route::get('/location', [LocationController::class, 'show']);
     Route::post('/location', [LocationController::class, 'store']);
     Route::put('/location', [LocationController::class, 'update']);
+
+    Route::get('/document', [DocumentController::class, 'show']);
+    Route::post('/document', [DocumentController::class, 'store']);
+    Route::put('/document', [DocumentController::class, 'update']);
+
+    Route::get('/notice', [NoticeController::class, 'show']);
+    Route::post('/notice', [NoticeController::class, 'store']);
+    Route::put('/notice', [NoticeController::class, 'update']);
 
     Route::post('/message', [MessageController::class, 'store']);
     Route::put('/message', [MessageController::class, 'update']);
@@ -54,3 +66,9 @@ Route::group([
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/block', function () {
+
+    return response()->json(['type' => 'data' , 'error' => "Unauthorized"], 401);
+
+})->name('block');

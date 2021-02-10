@@ -22,8 +22,8 @@ class MessageController extends Controller
     /**
      * @OA\Post(
      * path="/api/v1/message",
-     * summary="Generar un ticker",
-     * description="Generar un ticker (con Token)",
+     * summary="Generar un ticket",
+     * description="Generar un ticket (con Token)",
      * operationId="TicketsCreate",
      * tags={"Tickets"},
      * @OA\RequestBody(
@@ -98,7 +98,7 @@ class MessageController extends Controller
         $message = Message::create([
             'fk_user_id' => $request->user_id,
             'fk_type_message_id' => $request->type_id,
-            'fk_user_id' => $request->location_id,
+            'fk_location_id' => $request->location_id,
             'subject' => $request->subject,
             'body' => $request->body
         ]);
@@ -232,8 +232,10 @@ class MessageController extends Controller
         $messages = Message::leftJoin('users','users.id','=','messages.fk_user_id')
         ->leftJoin('type_messages','type_messages.id','=','messages.fk_type_message_id')
         ->leftJoin('locations','locations.id','=','messages.fk_location_id')
-        ->where('messages.opened',0)
-        ->get();
+        ->whereOpened(1)
+        ->get([
+            'messages.*'
+        ]);
 
         return response()->json($messages, 200);
     }

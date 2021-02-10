@@ -122,11 +122,21 @@ class MessageHistoryController extends Controller
 
     /**
      * @OA\Get(
-     * path="/api/v1/history/message/all/1",
+     * path="/api/v1/history/message/all/{id}",
      * summary="Historial de respuestas de un ticker",
      * description="Historial de respuestas de un ticker (con Token)",
      * operationId="TicketsHisGet",
      * tags={"Tickets - Mensajes"},
+     * @OA\Parameter(
+     *         description="ID del mensaje",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(
+     *             format="int64",
+     *             type="integer"
+     *         )
+     *      ),
      * @OA\Response(
      *    response=200,
      *    description="Ok",
@@ -154,12 +164,7 @@ class MessageHistoryController extends Controller
      */
     public function show($id)
     {
-        $MessageHistory = MessageHistory::leftJoin('messages','messages.id','=','message_histories.fk_message_id')
-        ->leftJoin('users','users.id','=','message_histories.fk_user_id')
-        ->leftJoin('type_messages','type_messages.id','=','messages.fk_type_message_id')
-        ->leftJoin('locations','locations.id','=','messages.fk_location_id')
-        ->where('message_histories.fk_message_id',$id)
-        ->get();
+        $MessageHistory = MessageHistory::dataEs($id);
 
         return response()->json($MessageHistory, 200);
     }
