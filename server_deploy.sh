@@ -8,8 +8,9 @@ echo "Deploying application ..."
     # Update codebase
     # git fetch origin deploy
     # git reset --hard origin/deploy
-    git fetch --all
+    git fetch
 
+    git pull
     # Install dependencies based on lock file
     composer update -n
 
@@ -25,7 +26,7 @@ echo "Deploying application ..."
     # Note: If you're using queue workers, this is the place to restart them.
     # ...
     php artisan l5-swagger:generate
-    
+
     # Clear cache
     php artisan optimize
 

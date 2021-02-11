@@ -1,9 +1,7 @@
 name: CI_CD Laravel Dev
 on:
-  push:
-    branches: [ develop ]
   pull_request:
-    branches: [ develop ]
+    branches: [ testing ]
 jobs:
 
   dev-test:
@@ -43,7 +41,7 @@ jobs:
           php artisan serve > /dev/null 2>&1 &
           composer dump-autoload
           chmod -R 0755 vendor/laravel/dusk/bin/
-          php artisan migrate
+          php artisan migrate --seed
           php artisan test
         env:
           APP_ENV: local
