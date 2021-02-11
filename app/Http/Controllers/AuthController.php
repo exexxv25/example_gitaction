@@ -378,7 +378,7 @@ class AuthController extends Controller
 
     /**
      * @OA\Post(
-     * path="/api/v1/user/find/document",
+     * path="/api/v1/user/find/passport",
      * summary="Buscar DNI",
      * description="BuscarDni ( Primero autorizar los headers con el token JWT provisto en el login)",
      * operationId="findPassport",
@@ -409,7 +409,7 @@ class AuthController extends Controller
      * )
      */
 
-    public function existDocument(Request $request){
+    public function existPassport(Request $request){
 
         $validator = Validator::make($request->all(), [
             'dni' => 'required',

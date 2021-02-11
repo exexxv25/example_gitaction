@@ -38,7 +38,7 @@ Route::group([
 
 ], function ($router) {
 
-    Route::post('/user/find/document', [AuthController::class, 'existDocument']);
+    Route::post('/user/find/passport', [AuthController::class, 'existPassport']);
 
     Route::get('/location/district/{state_id?}', [LocationController::class, 'districtArg']);
     Route::get('/location/state', [LocationController::class, 'estateArg']);
