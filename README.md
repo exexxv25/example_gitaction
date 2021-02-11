@@ -23,4 +23,4 @@ Laravel is accessible, powerful, and provides tools required for large, robust a
 
 ## Neighbors release
 
-v1.0.0.2
+v1.0.0.3
