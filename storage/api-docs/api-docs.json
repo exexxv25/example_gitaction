@@ -577,6 +577,76 @@
                 ]
             }
         },
+        "/api/v1/user/find/document": {
+            "post": {
+                "tags": [
+                    "Buscar"
+                ],
+                "summary": "Buscar DNI",
+                "description": "BuscarDni ( Primero autorizar los headers con el token JWT provisto en el login)",
+                "operationId": "findPassport",
+                "requestBody": {
+                    "description": "Buscar un dni",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "dni"
+                                ],
+                                "properties": {
+                                    "dni": {
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": "12345678"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "0": {
+                                            "type": "string",
+                                            "example": "true"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Error: Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/document": {
             "get": {
                 "tags": [
