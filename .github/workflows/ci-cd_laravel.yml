@@ -12,9 +12,9 @@ jobs:
         image: mariadb:10.2
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: neighbors
+          MYSQL_DATABASE: dusk
         ports:
-          - 3306:3306
+          - 33306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     timeout-minutes: 30
@@ -47,9 +47,9 @@ jobs:
           APP_ENV: local
           APP_URL: "http://127.0.0.1:8000"
           DB_CONNECTION: mysql
-          DB_DATABASE: neighbors
-          DB_PORT: 3306
-          DB_USER: neighbors
+          DB_DATABASE: dusk
+          DB_PORT: 33306
+          DB_USER: root
       - name: Deploy to QA
         uses: appleboy/ssh-action@master
         with:
