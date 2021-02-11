@@ -15,7 +15,12 @@ echo "Deploying application ..."
 
     # Migrate database
     php artisan migrate --force
-
+    php artisan route:cache
+    php artisan route:clear
+    php artisan cache:clear
+    php artisan view:cache
+    php artisan view:clear
+    php artisan optimize
     php artisan l5-swagger:generate
     # Note: If you're using queue workers, this is the place to restart them.
     # ...

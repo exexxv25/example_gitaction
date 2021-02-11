@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '9a237bc29b94d665743816d7e49a3c8d40d1d893',
+    'reference' => 'ec488d6b32ef0fe0e12760e354d68fb93c457f0d',
     'name' => 'laravel/laravel',
   ),
   'versions' => 
@@ -542,7 +542,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '9a237bc29b94d665743816d7e49a3c8d40d1d893',
+      'reference' => 'ec488d6b32ef0fe0e12760e354d68fb93c457f0d',
     ),
     'laravel/legacy-factories' => 
     array (
@@ -564,12 +564,12 @@
     ),
     'laravel/telescope' => 
     array (
-      'pretty_version' => 'v4.4.1',
-      'version' => '4.4.1.0',
+      'pretty_version' => 'v4.4.2',
+      'version' => '4.4.2.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'c21b0e38c3e1e7f12a391eb97f092de1d1f2bdd8',
+      'reference' => 'bb2b733a8ac5c8e5da8a935e15db5624ed998de9',
     ),
     'laravel/tinker' => 
     array (
