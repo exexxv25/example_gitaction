@@ -1,9 +1,7 @@
 name: CI_CD Laravel Dev
 on:
-  push:
-    branches: [ develop ]
   pull_request:
-    branches: [ develop ]
+    branches: [ testing ]
 jobs:
 
   dev-test:
