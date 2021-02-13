@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\RolFlow;
+use App\Models\Location;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class LocationUser extends Model
 {
@@ -11,16 +13,39 @@ class LocationUser extends Model
 
     public static function dataEs($user_id){
 
-        $location = self::leftJoin('users','users.id','=','location_users.fk_user_id')
-        ->leftJoin("locations","locations.id","=","location_users.fk_location_id")
-        ->where("fk_user_id",$user_id)
-        ->get([
-                'locations.id as id_barrio',
-                'locations.name as nombre_barrio'
-            ]);
+    $location = RolFlow::leftJoin('flows','flows.id','=','rol_flows.fk_flow_permission_id')
+    ->leftJoin('type_permissions','type_permissions.id','=','rol_flows.fk_type_permission_id')
+    ->leftJoin('rols','rols.id','=','rol_flows.fk_rol_id')
+    ->leftJoin('users','users.id','=','rol_flows.fk_user_id')
+    ->leftJoin('location_users','location_users.fk_user_id','=','users.id')
+    ->leftJoin('locations','locations.id','=','location_users.fk_location_id')
+    ->where("users.id",$user_id)
+    ->groupBy('locations.name')
+    ->get([
+            'locations.id as id_barrio',
+            'locations.name as nombre_barrio',
+            'rols.name as role',
+
+        ]);
+
+        $roles = array_unique($location->map->role->toArray());
+
+        if(is_null(array_unique($location->map->nombre_barrio->toArray())[0]) && $roles[0] == "MASTER_ROL" ){
+
+            $locations = Location::all(["name as nombre_barrio","id as id_barrio"])->toArray();
+
+        }else{
+
+            $locations = $location->makeHidden(['role'])->toArray();
+        }
 
 
-        return $location;
+        if(is_null($locations)){
+
+            return array("error" => "configuracion de permisos");
+        }
+
+        return $locations;
 
     }
 }

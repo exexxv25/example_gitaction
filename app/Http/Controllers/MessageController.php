@@ -234,7 +234,14 @@ class MessageController extends Controller
         ->leftJoin('locations','locations.id','=','messages.fk_location_id')
         ->whereOpened(1)
         ->get([
-            'messages.*'
+            'messages.body',
+            'messages.created_at',
+            'messages.updated_at',
+            'messages.subject',
+            'locations.name as location',
+            'type_messages.description as type',
+            'users.name',
+            'users.lastname',
         ]);
 
         return response()->json($messages, 200);

@@ -39,6 +39,8 @@ class MessageHistory extends Model
                 if(!isset($messageHistory[0]["type"])){
 
                     $messageHistory[0]["type"] = "odd";
+                    $messageHistory[0]["nombre"] = auth()->user()->name;
+                    $messageHistory[0]["apellido"] = auth()->user()->lastname;
                     $messageHistory[0]["avatar"] = auth()->user()->avatar;
                 }
 
@@ -55,8 +57,12 @@ class MessageHistory extends Model
             }else{
                 if(!isset($messageHistory[1]["type"])){
 
+                    $userEven = User::find($value->fk_user_id);
+
                     $messageHistory[1]["type"] = "even";
-                    $messageHistory[1]["avatar"] = User::find($value->fk_user_id)->avatar;
+                    $messageHistory[1]["nombre"] = $userEven->name;
+                    $messageHistory[1]["apellido"] = $userEven->lastname;
+                    $messageHistory[1]["avatar"] = $userEven->avatar;
 
                 }
 

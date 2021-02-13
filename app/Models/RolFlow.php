@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Location;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class RolFlow extends Model
 {
@@ -56,33 +57,59 @@ class RolFlow extends Model
             $autorizations = self::leftJoin('flows','flows.id','=','rol_flows.fk_flow_permission_id')
             ->leftJoin('type_permissions','type_permissions.id','=','rol_flows.fk_type_permission_id')
             ->leftJoin('rols','rols.id','=','rol_flows.fk_rol_id')
-            ->where("fk_user_id",$user->id)
+            ->leftJoin('users','users.id','=','rol_flows.fk_user_id')
+            ->leftJoin('location_users','location_users.fk_user_id','=','users.id')
+            ->leftJoin('locations','locations.id','=','location_users.fk_location_id')
+            ->where("users.id",$user->id)
             ->get([
-                    'rol_flows.*',
                     'flows.description as flujo',
                     'type_permissions.description as permiso',
                     'rols.name as role',
+                    'locations.name as location_name',
                 ]);
-
 
             $roles = array_unique($autorizations->map->role->toArray());
 
+            if(is_null(array_unique($autorizations->map->location_name->toArray())[0]) && $roles[0] == "MASTER_ROL" ){
+
+                $locations = Location::all(["name"])->toArray();
+
+            }else{
+
+                $locations = array_unique($autorizations->map->location_name->toArray());
+
+            }
+
+            if(is_null($locations[0])){
+
+                return array("error" => "configuracion de permisos");
+            }
+
             $flow=array();
 
-                foreach ($autorizations->toArray() as $key => $element) {
+            foreach ($locations as $key => $location) {
 
-                    foreach ($roles as $key => $value) {
+                foreach ($roles as $key => $rol) {
 
-                        if($element["role"] == $value){
+                        foreach ($autorizations->toArray() as $key => $element) {
 
-                            if(!isset($flow[$value][$element["flujo"]])){
+                        if($element["role"] == $rol){
 
-                                $flow[$value][$element["flujo"]] = array($element["permiso"]);
+                                    $dataLocation = is_array($location)? $location["name"] : $location;
 
-                            }else{
+                                    if($element["location_name"] == $dataLocation || is_null($element["location_name"])){
 
-                                array_push($flow[$value][$element["flujo"]],$element["permiso"]);
+                                        if(!isset($flow[$dataLocation][$rol][$element["flujo"]])){
 
+                                            $flow[$dataLocation][$rol][$element["flujo"]] = array($element["permiso"]);
+
+                                        }else{
+
+                                            array_push($flow[$dataLocation][$rol][$element["flujo"]],$element["permiso"]);
+
+                                        }
+
+                                    }
                             }
                         }
                     }

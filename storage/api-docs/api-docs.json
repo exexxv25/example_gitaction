@@ -259,20 +259,45 @@
                                         "format": "text",
                                         "example": "Administrador"
                                     },
-                                    "email": {
-                                        "type": "string",
-                                        "format": "email",
-                                        "example": "admin@neighbors.com"
-                                    },
                                     "password": {
-                                        "type": "string",
-                                        "format": "password",
-                                        "example": "neighbors3212021"
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": "12345678"
                                     },
                                     "password_confirmation": {
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": "12345678"
+                                    },
+                                    "allow": {
                                         "type": "string",
-                                        "format": "password",
-                                        "example": "neighbors3212021"
+                                        "format": "boolean",
+                                        "example": "1"
+                                    },
+                                    "lastname": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "admin2Apellido"
+                                    },
+                                    "passport": {
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": "87654321"
+                                    },
+                                    "phone": {
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": "12345678"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "admin2@neighbors.com"
+                                    },
+                                    "avatar": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "mi_foto2.jpg"
                                     }
                                 },
                                 "type": "object"
@@ -293,15 +318,45 @@
                                         },
                                         "user": {
                                             "properties": {
-                                                "name": {
+                                                "habilitado": {
+                                                    "type": "string",
+                                                    "format": "boolean",
+                                                    "example": "1"
+                                                },
+                                                "nombre": {
                                                     "type": "string",
                                                     "format": "text",
-                                                    "example": "Administrador"
+                                                    "example": "adminNombre"
+                                                },
+                                                "apellido": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "adminApellido"
+                                                },
+                                                "dni": {
+                                                    "type": "int",
+                                                    "format": "number",
+                                                    "example": "87654321"
+                                                },
+                                                "telefono": {
+                                                    "type": "int",
+                                                    "format": "number",
+                                                    "example": "12345678"
                                                 },
                                                 "email": {
                                                     "type": "string",
-                                                    "format": "email",
+                                                    "format": "text",
                                                     "example": "admin@neighbors.com"
+                                                },
+                                                "img": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "mi_foto.jpg"
+                                                },
+                                                "uid": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "HQ21SD1R1F8S"
                                                 },
                                                 "updated_at": {
                                                     "type": "string",
@@ -577,7 +632,7 @@
                 ]
             }
         },
-        "/api/v1/user/find/document": {
+        "/api/v1/user/find/passport": {
             "post": {
                 "tags": [
                     "Buscar"
