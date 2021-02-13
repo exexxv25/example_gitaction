@@ -1,6 +1,7 @@
 /public/hot
 /public/storage
 /storage/*.key
+/storage/api-docs/*
 .env
 .env.testing
 .env.example
