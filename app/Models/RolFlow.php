@@ -70,6 +70,13 @@ class RolFlow extends Model
 
             $roles = array_unique($autorizations->map->role->toArray());
 
+
+            if(!isset($roles[0])){
+
+                return "SIN ROL ASIGNADO";
+            }
+
+
             if(is_null(array_unique($autorizations->map->location_name->toArray())[0]) && $roles[0] == "MASTER_ROL" ){
 
                 $locations = Location::all(["name"])->toArray();

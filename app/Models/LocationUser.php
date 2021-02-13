@@ -30,6 +30,11 @@ class LocationUser extends Model
 
         $roles = array_unique($location->map->role->toArray());
 
+        if(!isset($roles[0])){
+
+            return "SIN ROL ASIGNADO";
+        }
+
         if(is_null(array_unique($location->map->nombre_barrio->toArray())[0]) && $roles[0] == "MASTER_ROL" ){
 
             $locations = Location::all(["name as nombre_barrio","id as id_barrio"])->toArray();
@@ -42,7 +47,7 @@ class LocationUser extends Model
 
         if(is_null($locations)){
 
-            return array("error" => "configuracion de permisos");
+            return "SIN BARRIO";
         }
 
         return $locations;

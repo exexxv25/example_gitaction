@@ -21,6 +21,10 @@ class LotUser extends Model
                 'locations.name as nombre_barrio*'
             ]);
 
+            if(is_null($lot)){
+
+                return "SIN CASAS";
+            }
 
         return $lot;
 
