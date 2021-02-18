@@ -108,6 +108,32 @@ class User extends Authenticatable implements JWTSubject
 
     }
 
+
+    public function myFirstRols(){
+
+        $autorizations = RolFlow::leftJoin('flows','flows.id','=','rol_flows.fk_flow_permission_id')
+        ->leftJoin('type_permissions','type_permissions.id','=','rol_flows.fk_type_permission_id')
+        ->leftJoin('rols','rols.id','=','rol_flows.fk_rol_id')
+        ->where("fk_user_id",auth()->user()->id)
+        ->first([
+                'rols.name as role'
+            ]);
+
+            try {
+
+                $roles = $autorizations->role;
+
+                return $roles;
+            } catch (\Throwable $th) {
+
+
+                return array("SIN ROL ASIGNADO");
+
+            }
+
+    }
+
+
     public static function myLocation(){
 
         $location = RolFlow::leftJoin('flows','flows.id','=','rol_flows.fk_flow_permission_id')

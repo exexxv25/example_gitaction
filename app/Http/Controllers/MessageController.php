@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Message;
 use App\Models\TypeMessage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -229,21 +230,27 @@ class MessageController extends Controller
 
     public function show(Request $request){
 
-        $messages = Message::leftJoin('users','users.id','=','messages.fk_user_id')
+        $messages = DB::table("messages")->leftJoin('users','users.id','=','messages.fk_user_id')
         ->leftJoin('type_messages','type_messages.id','=','messages.fk_type_message_id')
-        ->leftJoin('locations','locations.id','=','messages.fk_location_id')
-        ->whereOpened(1)->where("messages.fk_location_id",auth()->user()->myLocation())
-        ->get([
-            'messages.id',
-            'messages.body',
-            'messages.created_at',
-            'messages.updated_at',
-            'messages.subject',
-            'locations.name as location',
-            'type_messages.description as type',
-            'users.name',
-            'users.lastname',
-        ]);
+        ->leftJoin('locations','locations.id','=','messages.fk_location_id');
+
+        if(auth()->user()->myFirstRols() != "MASTER_ROL"){
+
+            $messages =  $messages->whereOpened(1)->where("messages.fk_location_id",auth()->user()->myLocation());
+        }
+
+        $messages = $messages->get([
+                'messages.id',
+                'messages.body',
+                'messages.created_at',
+                'messages.updated_at',
+                'messages.subject',
+                'locations.name as location',
+                'type_messages.description as type',
+                'users.name',
+                'users.lastname',
+            ]);
+
 
         return response()->json($messages, 200);
     }
