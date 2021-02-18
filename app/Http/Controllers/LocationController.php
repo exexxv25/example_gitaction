@@ -6,6 +6,7 @@ use Validator;
 use GuzzleHttp\Client;
 use App\Models\Location;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LocationController extends Controller
 {
@@ -223,7 +224,7 @@ class LocationController extends Controller
      * path="/api/v1/location/state",
      * summary="Listar las provincias",
      * description="Listar las provincias (con Token)",
-     * operationId="LocationsGet",
+     * operationId="EstateGet",
      * tags={"Provincias"},
      * @OA\Response(
      *    response=200,
@@ -268,12 +269,12 @@ class LocationController extends Controller
      * path="/api/v1/location/district/{state_id}",
      * summary="Listar de localidades",
      * description="Listar de localidades (con Token)",
-     * operationId="LocationsGet",
+     * operationId="DistrictGet",
      * tags={"Localidades"},
      * @OA\Parameter(
-     *         description="ID del mensaje",
+     *         description="ID de la Provincia",
      *         in="path",
-     *         name="id",
+     *         name="state_id",
      *         required=true,
      *         @OA\Schema(
      *             format="int64",
@@ -318,6 +319,65 @@ class LocationController extends Controller
             return response()->json(['type' => 'http' , 'error' =>json_encode($e->getMessage())],422);
 
         }
+
+    }
+
+
+
+    /**
+     * @OA\Get(
+     * path="/api/v1/location/lot/{location_id}",
+     * summary="Listar lotes en el Barrio",
+     * description="Listar lotes en el Barrio (con Token)",
+     * operationId="LocationLotsGet",
+     * tags={"Barrios"},
+     * @OA\Parameter(
+     *         description="ID del barrio",
+     *         in="path",
+     *         name="location_id",
+     *         required=true,
+     *         @OA\Schema(
+     *             format="int64",
+     *             type="integer"
+     *         )
+     *      ),
+     * @OA\Response(
+     *    response=200,
+     *    description="Ok",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="Ok"),
+     *       @OA\Property(property="obj", type="string", example="array()"),
+     *        )
+     *     ),
+     * @OA\Response(
+     *    response=401,
+     *    description="Error: Unauthorized",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="error", type="string", example="Unauthenticated"),
+     *        )
+     *     ),
+     *  security={{ "apiAuth": {} }}
+     * )
+     */
+
+    public function locationLot($location_id){
+
+        if (is_null($location_id)) {
+            return response()->json(['type' => 'data' , 'error' => "EL Id es requerido"], 422);
+        }
+
+        $lot = DB::table("locations")
+        ->leftJoin("lot_users","lot_users.fk_location_id","=","locations.id")
+        ->where("locations.id",$location_id)
+        ->groupBy("lot_users.id")
+        ->get([
+            "lot_users.id as lote_id",
+            "lot_users.name as nombre",
+            "lot_users.created_at as creado",
+            "locations.id as barrio_id"
+        ]);
+
+        return response()->json($lot, 200);
 
     }
 }

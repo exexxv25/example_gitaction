@@ -46,6 +46,7 @@ Route::group([
     Route::get('/location', [LocationController::class, 'show']);
     Route::post('/location', [LocationController::class, 'store']);
     Route::put('/location', [LocationController::class, 'update']);
+    Route::get('/location/lot/{location_id?}', [LocationController::class, 'locationLot']);
 
     Route::get('/document', [DocumentController::class, 'show']);
     Route::post('/document', [DocumentController::class, 'store']);

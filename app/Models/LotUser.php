@@ -9,6 +9,8 @@ class LotUser extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
 
     public static function dataEs($user_id){
 
