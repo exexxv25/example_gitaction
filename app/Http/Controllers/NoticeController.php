@@ -19,14 +19,14 @@ class NoticeController extends Controller
 
     /**
      * @OA\Post(
-     * path="/api/v1/notice",
-     * summary="Generar una Noticia",
-     * description="Generar una Noticia (con Token)",
-     * operationId="NoticeCreate",
-     * tags={"Notice"},
+     * path="/api/v1/news",
+     * summary="Generar una Novedad",
+     * description="Generar una Novedad (con Token)",
+     * operationId="newsCreate",
+     * tags={"Novedades"},
      * @OA\RequestBody(
      *    required=true,
-     *    description="Datos de la Noticia",
+     *    description="Datos de la Novedad",
      *    @OA\JsonContent(
      *       required={"user_id","location_id","expired","tittle","body"},
      *       @OA\Property(property="user_id", type="int", format="number", example=1),
@@ -119,14 +119,14 @@ class NoticeController extends Controller
 
     /**
      * @OA\Put(
-     * path="/api/v1/notice",
-     * summary="Modificar una Noticia",
-     * description="Modificar una Noticia (con Token)",
-     * operationId="NoticeUpdate",
-     * tags={"Notice"},
+     * path="/api/v1/news",
+     * summary="Modificar una Novedad",
+     * description="Modificar una Novedad (con Token)",
+     * operationId="newsUpdate",
+     * tags={"Novedades"},
      * @OA\RequestBody(
      *    required=true,
-     *    description="Datos del Noticia",
+     *    description="Datos del Novedad",
      *    @OA\JsonContent(
      *       required={"id"},
      *       @OA\Property(property="id", type="int", format="number", example=1),
@@ -209,11 +209,11 @@ class NoticeController extends Controller
 
     /**
      * @OA\Get(
-     * path="/api/v1/notice",
-     * summary="Listar las Noticias",
-     * description="Listar las Noticias (con Token)",
-     * operationId="NoticeGet",
-     * tags={"Notice"},
+     * path="/api/v1/news",
+     * summary="Listar las Novedades",
+     * description="Listar las Novedades (con Token)",
+     * operationId="newsGet",
+     * tags={"Novedades"},
      * @OA\Response(
      *    response=200,
      *    description="Ok",

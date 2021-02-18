@@ -2,11 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\MessageHistoryController;
-use App\Http\Controllers\NoticeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,9 +51,13 @@ Route::group([
     Route::post('/document', [DocumentController::class, 'store']);
     Route::put('/document', [DocumentController::class, 'update']);
 
-    Route::get('/notice', [NoticeController::class, 'show']);
-    Route::post('/notice', [NoticeController::class, 'store']);
-    Route::put('/notice', [NoticeController::class, 'update']);
+    Route::get('/news', [NoticeController::class, 'show']);
+    Route::post('/news', [NoticeController::class, 'store']);
+    Route::put('/news', [NoticeController::class, 'update']);
+
+    Route::get('/notification', [NotificationController::class, 'show']);
+    Route::post('/notification', [NotificationController::class, 'store']);
+    Route::put('/notification', [NotificationController::class, 'update']);
 
     Route::post('/message', [MessageController::class, 'store']);
     Route::put('/message', [MessageController::class, 'update']);

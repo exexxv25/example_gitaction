@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\RolFlow;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -82,4 +83,71 @@ class User extends Authenticatable implements JWTSubject
         ];
 
     }
+
+    public function myRols(){
+
+        $autorizations = RolFlow::leftJoin('flows','flows.id','=','rol_flows.fk_flow_permission_id')
+        ->leftJoin('type_permissions','type_permissions.id','=','rol_flows.fk_type_permission_id')
+        ->leftJoin('rols','rols.id','=','rol_flows.fk_rol_id')
+        ->where("fk_user_id",auth()->user()->id)
+        ->get([
+                'rol_flows.*',
+                'flows.description as flujo',
+                'type_permissions.description as permiso',
+                'rols.name as role',
+            ]);
+
+        $roles = array_unique($autorizations->map->role->toArray());
+
+        if(!isset($roles[0])){
+
+            return array("SIN ROL ASIGNADO");
+        }
+
+        return $roles;
+
+    }
+
+    public static function myLocation(){
+
+        $location = RolFlow::leftJoin('flows','flows.id','=','rol_flows.fk_flow_permission_id')
+        ->leftJoin('type_permissions','type_permissions.id','=','rol_flows.fk_type_permission_id')
+        ->leftJoin('rols','rols.id','=','rol_flows.fk_rol_id')
+        ->leftJoin('users','users.id','=','rol_flows.fk_user_id')
+        ->leftJoin('location_users','location_users.fk_user_id','=','users.id')
+        ->leftJoin('locations','locations.id','=','location_users.fk_location_id')
+        ->where("users.id",auth()->user()->id)
+        ->groupBy('locations.name')
+        ->get([
+                'locations.id',
+                'locations.name as nombre_barrio',
+                'rols.name as role',
+
+            ]);
+
+            $roles = array_unique($location->map->role->toArray());
+
+            if(!isset($roles[0])){
+
+                return array("SIN ROL ASIGNADO");
+            }
+
+            if(is_null(array_unique($location->map->nombre_barrio->toArray())[0]) && $roles[0] == "MASTER_ROL" ){
+
+                $locations = Location::all(["id"])->toArray();
+
+            }else{
+
+                $locations = $location->makeHidden(['role','nombre_barrio'])->toArray();
+            }
+
+
+            if(is_null($locations)){
+
+                return array("SIN BARRIO");
+            }
+
+            return array_column($locations,"id");
+
+        }
 }

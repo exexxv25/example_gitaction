@@ -2223,14 +2223,14 @@
                 ]
             }
         },
-        "/api/v1/notice": {
+        "/api/v1/news": {
             "get": {
                 "tags": [
-                    "Notice"
+                    "Novedades"
                 ],
                 "summary": "Listar las Noticias",
                 "description": "Listar las Noticias (con Token)",
-                "operationId": "NoticeGet",
+                "operationId": "newsGet",
                 "responses": {
                     "200": {
                         "description": "Ok",
@@ -2277,11 +2277,11 @@
             },
             "put": {
                 "tags": [
-                    "Notice"
+                    "Novedades"
                 ],
                 "summary": "Modificar una Noticia",
                 "description": "Modificar una Noticia (con Token)",
-                "operationId": "NoticeUpdate",
+                "operationId": "newsUpdate",
                 "requestBody": {
                     "description": "Datos del Noticia",
                     "required": true,
@@ -2416,11 +2416,11 @@
             },
             "post": {
                 "tags": [
-                    "Notice"
+                    "Novedades"
                 ],
                 "summary": "Generar una Noticia",
                 "description": "Generar una Noticia (con Token)",
-                "operationId": "NoticeCreate",
+                "operationId": "newsCreate",
                 "requestBody": {
                     "description": "Datos de la Noticia",
                     "required": true,

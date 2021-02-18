@@ -227,13 +227,14 @@ class MessageController extends Controller
      * )
      */
 
-    public function show(){
+    public function show(Request $request){
 
         $messages = Message::leftJoin('users','users.id','=','messages.fk_user_id')
         ->leftJoin('type_messages','type_messages.id','=','messages.fk_type_message_id')
         ->leftJoin('locations','locations.id','=','messages.fk_location_id')
-        ->whereOpened(1)
+        ->whereOpened(1)->where("messages.fk_location_id",auth()->user()->myLocation())
         ->get([
+            'messages.id',
             'messages.body',
             'messages.created_at',
             'messages.updated_at',
