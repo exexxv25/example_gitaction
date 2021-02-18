@@ -35,7 +35,7 @@ class NoticeTest extends TestCase
                 'access_token' => true,
             ]);
 
-        $response = $this->postJson('/api/v1/notice', [
+        $response = $this->postJson('/api/v1/news', [
             'user_id' => 1,
             'location_id' => 1,
             'body' => "Se habilito un nuevo ginmasio",
@@ -53,7 +53,7 @@ class NoticeTest extends TestCase
 
         $version = mt_rand();
 
-        $response = $this->putJson('/api/v1/notice', [
+        $response = $this->putJson('/api/v1/news', [
             'id' => $data->id,
             'body' => "Se habilito una nueva seccion del gimnacio X",
             ]);
@@ -64,7 +64,7 @@ class NoticeTest extends TestCase
                 'body' => true,
             ]);
 
-        $response = $this->getJson('/api/v1/notice', [
+        $response = $this->getJson('/api/v1/news', [
             ]);
 
         $response
