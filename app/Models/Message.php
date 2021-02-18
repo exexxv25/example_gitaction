@@ -15,6 +15,7 @@ class Message extends Model
         'fk_location_id',
         'fk_user_id',
         'subject',
+        'id',
         'body',
         ];
 }
