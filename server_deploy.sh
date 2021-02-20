@@ -22,17 +22,9 @@ echo "Deploying application ..."
     php artisan view:cache
     php artisan view:clear
     php artisan optimize
-    php artisan l5-swagger:generate
-    # Note: If you're using queue workers, this is the place to restart them.
-    # ...
-    php artisan l5-swagger:generate
 
-    # Clear cache
-    php artisan optimize
 
 # Exit maintenance mode
 php artisan up
-
-php artisan l5-swagger:generate
 
 echo "Application deployed!"
