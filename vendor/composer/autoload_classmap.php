@@ -8,7 +8,9 @@ $baseDir = dirname($vendorDir);
 return array(
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
+    'App\\Http\\Controllers\\AmenitieController' => $baseDir . '/app/Http/Controllers/AmenitieController.php',
     'App\\Http\\Controllers\\AuthController' => $baseDir . '/app/Http/Controllers/AuthController.php',
+    'App\\Http\\Controllers\\AutorizationController' => $baseDir . '/app/Http/Controllers/AutorizationController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
     'App\\Http\\Controllers\\DocumentController' => $baseDir . '/app/Http/Controllers/DocumentController.php',
     'App\\Http\\Controllers\\FileStoreController' => $baseDir . '/app/Http/Controllers/FileStoreController.php',
@@ -5851,6 +5853,7 @@ return array(
     'Tests\\Feature\\Message\\MessageHistoryTest' => $baseDir . '/tests/Feature/Message/MessageHistoryTest.php',
     'Tests\\Feature\\Message\\MessageTest' => $baseDir . '/tests/Feature/Message/MessageTest.php',
     'Tests\\Feature\\Notice\\NoticeTest' => $baseDir . '/tests/Feature/Notice/NoticeTest.php',
+    'Tests\\Feature\\Notification\\NotificationTest' => $baseDir . '/tests/Feature/Notification/NotificationTest.php',
     'Tests\\TestCase' => $baseDir . '/tests/TestCase.php',
     'Tests\\Unit\\InitTest' => $baseDir . '/tests/Unit/InitTest.php',
     'TheSeer\\Tokenizer\\Exception' => $vendorDir . '/theseer/tokenizer/src/Exception.php',

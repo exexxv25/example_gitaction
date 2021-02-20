@@ -158,7 +158,8 @@ class AuthController extends Controller
      *          @OA\Property(property="passport", type="int", format="number", example="87654321"),
      *          @OA\Property(property="phone", type="int", format="number", example="12345678"),
      *          @OA\Property(property="email", type="string", format="text", example="admin2@neighbors.com"),
-     *          @OA\Property(property="avatar", type="string", format="text", example="mi_foto2.jpg")
+     *          @OA\Property(property="avatar", type="string", format="text", example="mi_foto2.jpg"),
+     *          @OA\Property(property="user_relative", type="integer", format="number", example="1")
      *    ),
      * ),
      * @OA\Response(

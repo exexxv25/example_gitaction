@@ -84,12 +84,17 @@ class User extends Authenticatable implements JWTSubject
 
     }
 
-    public function myRols(){
+    public function myRols($user_id = null){
+
+        if(is_null($user_id)){
+
+            $user_id = auth()->user()->id;
+        }
 
         $autorizations = RolFlow::leftJoin('flows','flows.id','=','rol_flows.fk_flow_permission_id')
         ->leftJoin('type_permissions','type_permissions.id','=','rol_flows.fk_type_permission_id')
         ->leftJoin('rols','rols.id','=','rol_flows.fk_rol_id')
-        ->where("fk_user_id",auth()->user()->id)
+        ->where("fk_user_id",$user_id)
         ->get([
                 'rol_flows.*',
                 'flows.description as flujo',
@@ -109,12 +114,17 @@ class User extends Authenticatable implements JWTSubject
     }
 
 
-    public function myFirstRols(){
+    public function myFirstRols($user_id = null){
+
+        if(is_null($user_id)){
+
+            $user_id = auth()->user()->id;
+        }
 
         $autorizations = RolFlow::leftJoin('flows','flows.id','=','rol_flows.fk_flow_permission_id')
         ->leftJoin('type_permissions','type_permissions.id','=','rol_flows.fk_type_permission_id')
         ->leftJoin('rols','rols.id','=','rol_flows.fk_rol_id')
-        ->where("fk_user_id",auth()->user()->id)
+        ->where("fk_user_id",$user_id)
         ->first([
                 'rols.name as role'
             ]);
@@ -134,7 +144,12 @@ class User extends Authenticatable implements JWTSubject
     }
 
 
-    public static function myLocation(){
+    public static function myLocation($user_id = null){
+
+        if(is_null($user_id)){
+
+            $user_id = auth()->user()->id;
+        }
 
         $location = RolFlow::leftJoin('flows','flows.id','=','rol_flows.fk_flow_permission_id')
         ->leftJoin('type_permissions','type_permissions.id','=','rol_flows.fk_type_permission_id')
@@ -142,7 +157,7 @@ class User extends Authenticatable implements JWTSubject
         ->leftJoin('users','users.id','=','rol_flows.fk_user_id')
         ->leftJoin('location_users','location_users.fk_user_id','=','users.id')
         ->leftJoin('locations','locations.id','=','location_users.fk_location_id')
-        ->where("users.id",auth()->user()->id)
+        ->where("users.id",$user_id)
         ->groupBy('locations.name')
         ->get([
                 'locations.id',

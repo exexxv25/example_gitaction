@@ -629,7 +629,9 @@ class ComposerStaticInit5fb6e5e2f6439f203d4c52248037a551
     public static $classMap = array (
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
+        'App\\Http\\Controllers\\AmenitieController' => __DIR__ . '/../..' . '/app/Http/Controllers/AmenitieController.php',
         'App\\Http\\Controllers\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/AuthController.php',
+        'App\\Http\\Controllers\\AutorizationController' => __DIR__ . '/../..' . '/app/Http/Controllers/AutorizationController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\DocumentController' => __DIR__ . '/../..' . '/app/Http/Controllers/DocumentController.php',
         'App\\Http\\Controllers\\FileStoreController' => __DIR__ . '/../..' . '/app/Http/Controllers/FileStoreController.php',
@@ -6472,6 +6474,7 @@ class ComposerStaticInit5fb6e5e2f6439f203d4c52248037a551
         'Tests\\Feature\\Message\\MessageHistoryTest' => __DIR__ . '/../..' . '/tests/Feature/Message/MessageHistoryTest.php',
         'Tests\\Feature\\Message\\MessageTest' => __DIR__ . '/../..' . '/tests/Feature/Message/MessageTest.php',
         'Tests\\Feature\\Notice\\NoticeTest' => __DIR__ . '/../..' . '/tests/Feature/Notice/NoticeTest.php',
+        'Tests\\Feature\\Notification\\NotificationTest' => __DIR__ . '/../..' . '/tests/Feature/Notification/NotificationTest.php',
         'Tests\\TestCase' => __DIR__ . '/../..' . '/tests/TestCase.php',
         'Tests\\Unit\\InitTest' => __DIR__ . '/../..' . '/tests/Unit/InitTest.php',
         'TheSeer\\Tokenizer\\Exception' => __DIR__ . '/..' . '/theseer/tokenizer/src/Exception.php',
