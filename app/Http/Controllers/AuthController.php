@@ -7,18 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 
-/**
- * @OA\Info(title="Neighbors", version="1.0.0")
- * @OA\SecurityScheme(
- *     type="http",
- *     description="Header autorization toker JWT",
- *     name="Token Bearer",
- *     in="header",
- *     scheme="bearer",
- *     bearerFormat="JWT",
- *     securityScheme="apiAuth",
- * ),
- */
 class AuthController extends Controller
 {
     /**

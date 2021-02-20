@@ -9,5 +9,19 @@ use Illuminate\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
+
+/**
+ * @OA\Info(title="Neighbors", version="1.0.0")
+ * @OA\SecurityScheme(
+ *     type="http",
+ *     description="Header autorization toker JWT",
+ *     name="Token Bearer",
+ *     in="header",
+ *     scheme="bearer",
+ *     bearerFormat="JWT",
+ *     securityScheme="apiAuth",
+ * ),
+ */
+
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 }
