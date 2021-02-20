@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "Neighbors",
-        "version": "release 1.0"
+        "version": "1.0.0"
     },
     "paths": {
         "/auth/login": {
@@ -1399,7 +1399,7 @@
                     {
                         "name": "state_id",
                         "in": "path",
-                        "description": "ID del mensaje",
+                        "description": "ID de la Provincia",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -1464,7 +1464,7 @@
                     {
                         "name": "location_id",
                         "in": "path",
-                        "description": "ID del mensaje",
+                        "description": "ID del barrio",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -2715,15 +2715,15 @@
                                         "format": "number",
                                         "example": 1
                                     },
-                                    "tittle": {
-                                        "type": "string",
-                                        "format": "text",
-                                        "example": "Se habilito una nueva seccion del gimnacio X"
-                                    },
                                     "body": {
                                         "type": "string",
                                         "format": "text",
-                                        "example": "Nuevo gimnasio"
+                                        "example": "Nuevo gimnasio v2"
+                                    },
+                                    "subject": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "Nuevo gimnasio v2"
                                     }
                                 },
                                 "type": "object"
@@ -2744,20 +2744,15 @@
                                         },
                                         "objMessage": {
                                             "properties": {
-                                                "tittle": {
+                                                "subject": {
                                                     "type": "string",
                                                     "format": "text",
-                                                    "example": "Nuevo gimnasio"
+                                                    "example": "Nuevo gimnasio v2"
                                                 },
                                                 "body": {
                                                     "type": "string",
                                                     "format": "text",
                                                     "example": "Se habilito una nueva seccion del gimnacio X"
-                                                },
-                                                "expired": {
-                                                    "type": "string",
-                                                    "format": "date",
-                                                    "example": "2021-01-18"
                                                 },
                                                 "location_id": {
                                                     "type": "integer",
@@ -2848,8 +2843,7 @@
                                 "required": [
                                     "user_id",
                                     "location_id",
-                                    "expired",
-                                    "tittle",
+                                    "subject",
                                     "body"
                                 ],
                                 "properties": {
@@ -2863,12 +2857,7 @@
                                         "format": "number",
                                         "example": 1
                                     },
-                                    "expired": {
-                                        "type": "string",
-                                        "format": "datetime",
-                                        "example": "2021-01-18T15:31:11.000000Z"
-                                    },
-                                    "tittle": {
+                                    "subject": {
                                         "type": "string",
                                         "format": "text",
                                         "example": "Nuevo gimnasio"
@@ -2897,7 +2886,7 @@
                                         },
                                         "objMessage": {
                                             "properties": {
-                                                "tittle": {
+                                                "subject": {
                                                     "type": "string",
                                                     "format": "text",
                                                     "example": "Nuevo gimnasio"
@@ -2906,11 +2895,6 @@
                                                     "type": "string",
                                                     "format": "text",
                                                     "example": "Se habilito un nuevo ginmasio"
-                                                },
-                                                "expired": {
-                                                    "type": "string",
-                                                    "format": "date",
-                                                    "example": "2021-01-18T15:31:11.000000Z"
                                                 },
                                                 "location_id": {
                                                     "type": "integer",
@@ -2976,9 +2960,13 @@
                                             "type": "number",
                                             "example": "The location_id field is required."
                                         },
-                                        "name": {
+                                        "subject": {
                                             "type": "string",
-                                            "example": "The name field is required."
+                                            "example": "The subject field is required."
+                                        },
+                                        "body": {
+                                            "type": "string",
+                                            "example": "The body field is required."
                                         }
                                     },
                                     "type": "object"
