@@ -11,7 +11,7 @@ class Controller extends BaseController
 {
 
 /**
- * @OA\Info(title="Neighbors", version="1.2.0")
+ * @OA\Info(title="Neighbors", version="1.2.1")
  * @OA\SecurityScheme(
  *     type="http",
  *     description="Header autorization toker JWT",
