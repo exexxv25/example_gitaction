@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Notification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class NotificationController extends Controller
 {
@@ -27,11 +28,10 @@ class NotificationController extends Controller
      *    required=true,
      *    description="Datos de la Notificacion",
      *    @OA\JsonContent(
-     *       required={"user_id","location_id","expired","tittle","body"},
+     *       required={"user_id","location_id","subject","body"},
      *       @OA\Property(property="user_id", type="int", format="number", example=1),
      *       @OA\Property(property="location_id", type="int", format="number", example=1),
-     *       @OA\Property(property="expired", type="string", format="datetime", example="2021-01-18T15:31:11.000000Z"),
-     *       @OA\Property(property="tittle", type="string", format="text", example="Nuevo gimnasio"),
+     *       @OA\Property(property="subject", type="string", format="text", example="Nuevo gimnasio"),
      *       @OA\Property(property="body", type="string", format="text", example="Se habilito un nuevo ginmasio"),
      *    ),
      * ),
@@ -43,9 +43,8 @@ class NotificationController extends Controller
      *        @OA\Property(
      *           property="objMessage",
      *           type="object",
-     *          @OA\Property(property="tittle", type="string", format="text", example="Nuevo gimnasio"),
+     *          @OA\Property(property="subject", type="string", format="text", example="Nuevo gimnasio"),
      *          @OA\Property(property="body", type="string", format="text", example="Se habilito un nuevo ginmasio"),
-     *          @OA\Property(property="expired", type="string", format="date", example="2021-01-18T15:31:11.000000Z"),
      *          @OA\Property(property="location_id", type="integer", format="number", example=1),
      *          @OA\Property(property="user_id", type="integer", format="number", example=1),
      *          @OA\Property(property="updated_at", type="string", format="date", example="2021-01-18T15:31:11.000000Z"),
@@ -67,7 +66,8 @@ class NotificationController extends Controller
      *    @OA\JsonContent(
      *       @OA\Property(property="user_id", type="number", example="The user_id field is required."),
      *       @OA\Property(property="location_id", type="number", example="The location_id field is required."),
-     *       @OA\Property(property="name", type="string", example="The name field is required."),
+     *       @OA\Property(property="subject", type="string", example="The subject field is required."),
+     *       @OA\Property(property="body", type="string", example="The body field is required.")
      *        )
      *     ),
      *  security={{ "apiAuth": {} }}
@@ -79,8 +79,7 @@ class NotificationController extends Controller
         $validator = Validator::make($request->all(), [
             'user_id'     => 'required|int',
             'location_id' => 'required|int',
-            'expired'  => 'required|string',
-            'tittle'  => 'required|string',
+            'subject'  => 'required|string',
             'body'  => 'required|string',
         ]);
 
@@ -88,13 +87,10 @@ class NotificationController extends Controller
             return response()->json(['type' => 'data' , 'error' => $validator->errors()], 422);
         }
 
-        // dd($request->all());
-
         $notification = Notification::create([
             'fk_user_id' => $request->user_id,
             'fk_location_id' => $request->location_id,
-            'expired' => $request->expired,
-            'tittle' => $request->tittle,
+            'subject' => $request->subject,
             'body' => $request->body
         ]);
             //falta guardar archivo si es que se envia
@@ -129,8 +125,8 @@ class NotificationController extends Controller
      *    @OA\JsonContent(
      *       required={"id"},
      *       @OA\Property(property="id", type="int", format="number", example=1),
-     *       @OA\Property(property="tittle", type="string", format="text", example="Se habilito una nueva seccion del gimnacio X"),
-     *       @OA\Property(property="body", type="string", format="text", example="Nuevo gimnasio"),
+     *       @OA\Property(property="body", type="string", format="text", example="Nuevo gimnasio v2"),
+     *       @OA\Property(property="subject", type="string", format="text", example="Nuevo gimnasio v2"),
      *    ),
      * ),
      * @OA\Response(
@@ -141,9 +137,8 @@ class NotificationController extends Controller
      *        @OA\Property(
      *           property="objMessage",
      *           type="object",
-     *          @OA\Property(property="tittle", type="string", format="text", example="Nuevo gimnasio"),
+     *          @OA\Property(property="subject", type="string", format="text", example="Nuevo gimnasio v2"),
      *          @OA\Property(property="body", type="string", format="text", example="Se habilito una nueva seccion del gimnacio X"),
-     *          @OA\Property(property="expired", type="string", format="date", example="2021-01-18"),
      *          @OA\Property(property="location_id", type="integer", format="number", example=1),
      *          @OA\Property(property="user_id", type="integer", format="number", example=1),
      *          @OA\Property(property="updated_at", type="string", format="date", example="2021-01-18T15:31:11.000000Z"),
@@ -234,9 +229,10 @@ class NotificationController extends Controller
 
     public function show(){
 
-        $notification = Notification::leftJoin('file_stores','file_stores.id','=','notification.fk_file_store_id')
+        $notification = Notification::leftJoin("notification_file_stores","notifications.id","=","notification_file_stores.fk_notification_id")
+        ->leftJoin('file_stores','file_stores.id','=','notification_file_stores.fk_file_store_id')
         ->get([
-            'notification.*',
+            'notifications.*',
         ]);
 
         return response()->json($notification, 200);

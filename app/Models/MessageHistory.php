@@ -36,12 +36,14 @@ class MessageHistory extends Model
 
             if($value->fk_user_id == auth()->user()->id){
 
-                if(!isset($messageHistory[0]["type"])){
+                if(!isset($messageHistory[0]["chatClass"])){
 
-                    $messageHistory[0]["type"] = "odd";
-                    $messageHistory[0]["nombre"] = auth()->user()->name;
-                    $messageHistory[0]["apellido"] = auth()->user()->lastname;
-                    $messageHistory[0]["avatar"] = auth()->user()->avatar;
+                    $messageHistory[0]["chatClass"] = "odd";
+                    // $messageHistory[0]["nombre"] = auth()->user()->name;
+                    // $messageHistory[0]["apellido"] = auth()->user()->lastname;
+                    $messageHistory[0]["imagePath"] = auth()->user()->avatar;
+                    $messageHistory[0]["time"] = date_format($value->updated_at , 'h:ia');
+
                 }
 
                 if(!isset($messageHistory[0]["messageResponse"])){
@@ -49,21 +51,18 @@ class MessageHistory extends Model
                     $messageHistory[0]["messageResponse"] = [];
                 }
 
-                array_push($messageHistory[0]["messageResponse"],array(
-                    "mensaje" => $value->body,
-                    "fecha" => $value->updated_at
-                ));
+                array_push($messageHistory[0]["messageResponse"],$value->body);
 
             }else{
-                if(!isset($messageHistory[1]["type"])){
+                if(!isset($messageHistory[1]["chatClass"])){
 
                     $userEven = User::find($value->fk_user_id);
 
-                    $messageHistory[1]["type"] = "even";
-                    $messageHistory[1]["nombre"] = $userEven->name;
-                    $messageHistory[1]["apellido"] = $userEven->lastname;
-                    $messageHistory[1]["avatar"] = $userEven->avatar;
-
+                    $messageHistory[1]["chatClass"] = "even";
+                    // $messageHistory[1]["nombre"] = $userEven->name;
+                    // $messageHistory[1]["apellido"] = $userEven->lastname;
+                    $messageHistory[1]["imagePath"] = $userEven->avatar;
+                    $messageHistory[1]["time"] = date_format($value->updated_at , 'h:ia');
                 }
 
                 if(!isset($messageHistory[1]["messageResponse"])){
@@ -71,10 +70,7 @@ class MessageHistory extends Model
                     $messageHistory[1]["messageResponse"] = [];
                 }
 
-                array_push($messageHistory[1]["messageResponse"],array(
-                    "mensaje" => $value->body,
-                    "fecha" => $value->updated_at
-                ));
+                array_push($messageHistory[1]["messageResponse"],$value->body);
 
             }
         };
