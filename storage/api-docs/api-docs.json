@@ -289,7 +289,7 @@
         "/auth/login": {
             "post": {
                 "tags": [
-                    "AUTH"
+                    "aa_AUTH"
                 ],
                 "summary": "Login que responde un Token",
                 "description": "Login usando usuario y pass",
@@ -517,7 +517,7 @@
         "/auth/register": {
             "post": {
                 "tags": [
-                    "AUTH"
+                    "aa_AUTH"
                 ],
                 "summary": "Registrarse",
                 "description": "Registro de usuarios",
@@ -690,7 +690,7 @@
         "/auth/logout": {
             "post": {
                 "tags": [
-                    "AUTH"
+                    "aa_AUTH"
                 ],
                 "summary": "Logout",
                 "description": "Logout ( Primero autorizar los headers con el token JWT provisto en el login)",
@@ -739,7 +739,7 @@
         "/auth/refresh": {
             "post": {
                 "tags": [
-                    "AUTH"
+                    "aa_AUTH"
                 ],
                 "summary": "Refrescar Token",
                 "description": "Refrescar Token ( Primero autorizar los headers con el token JWT provisto en el login)",

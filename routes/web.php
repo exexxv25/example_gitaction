@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\AmenitieController;

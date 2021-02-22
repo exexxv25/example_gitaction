@@ -31,7 +31,7 @@ class AuthController extends Controller
      * summary="Login que responde un Token",
      * description="Login usando usuario y pass",
      * operationId="authLogin",
-     * tags={"AUTH"},
+     * tags={"Auth"},
      * @OA\RequestBody(
      *    required=true,
      *    description="Pass user credentials",
@@ -144,7 +144,7 @@ class AuthController extends Controller
      * summary="Registrarse",
      * description="Registro de usuarios",
      * operationId="authRegister",
-     * tags={"AUTH"},
+     * tags={"Auth"},
      * @OA\RequestBody(
      *    required=true,
      *    description="Datos del usuario",
@@ -228,7 +228,7 @@ class AuthController extends Controller
      * summary="Logout",
      * description="Logout ( Primero autorizar los headers con el token JWT provisto en el login)",
      * operationId="authLogout",
-     * tags={"AUTH"},
+     * tags={"Auth"},
      * @OA\Response(
      *    response=200,
      *    description="Ok",
@@ -265,7 +265,7 @@ class AuthController extends Controller
      * summary="Refrescar Token",
      * description="Refrescar Token ( Primero autorizar los headers con el token JWT provisto en el login)",
      * operationId="authRefresh",
-     * tags={"AUTH"},
+     * tags={"Auth"},
      * @OA\Response(
      *    response=200,
      *    description="Ok",
