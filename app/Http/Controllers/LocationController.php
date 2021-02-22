@@ -7,6 +7,7 @@ use GuzzleHttp\Client;
 use App\Models\Location;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class LocationController extends Controller
 {

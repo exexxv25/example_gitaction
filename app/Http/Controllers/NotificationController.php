@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Notification;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 
 class NotificationController extends Controller
@@ -33,6 +34,7 @@ class NotificationController extends Controller
      *       @OA\Property(property="location_id", type="int", format="number", example=1),
      *       @OA\Property(property="subject", type="string", format="text", example="Nuevo gimnasio"),
      *       @OA\Property(property="body", type="string", format="text", example="Se habilito un nuevo ginmasio"),
+     *       @OA\Property(property="priority", type="string", description="solo admite alta o normal" ,format="text", example="alta"),
      *    ),
      * ),
      * @OA\Response(
@@ -81,6 +83,10 @@ class NotificationController extends Controller
             'location_id' => 'required|int',
             'subject'  => 'required|string',
             'body'  => 'required|string',
+            'priority' => [
+                'required',
+                Rule::in(['alta', 'normal']),
+            ],
         ]);
 
         if ($validator->fails()) {
@@ -91,7 +97,8 @@ class NotificationController extends Controller
             'fk_user_id' => $request->user_id,
             'fk_location_id' => $request->location_id,
             'subject' => $request->subject,
-            'body' => $request->body
+            'body' => $request->body,
+            "priority" => $request->priority
         ]);
             //falta guardar archivo si es que se envia
             // //imagenes storage

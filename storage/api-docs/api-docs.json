@@ -3363,6 +3363,12 @@
                                         "type": "string",
                                         "format": "text",
                                         "example": "Se habilito un nuevo ginmasio"
+                                    },
+                                    "priority": {
+                                        "description": "solo admite alta o normal",
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "alta"
                                     }
                                 },
                                 "type": "object"
