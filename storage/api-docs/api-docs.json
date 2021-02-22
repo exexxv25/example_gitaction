@@ -5,6 +5,287 @@
         "version": "1.2.1"
     },
     "paths": {
+        "/api/v1/amenitie": {
+            "get": {
+                "tags": [
+                    "Amenities"
+                ],
+                "summary": "Listar los Amenities",
+                "description": "Listar los Amenities (con Token)",
+                "operationId": "amenitieGet",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ok"
+                                        },
+                                        "obj": {
+                                            "type": "string",
+                                            "example": "array()"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Error: Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Amenities"
+                ],
+                "summary": "Modificar un Amenitie",
+                "description": "Modificar un Amenitie (con Token)",
+                "operationId": "notificationUpdate",
+                "requestBody": {
+                    "description": "Datos del Amenitie",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Message successfully updated"
+                                        },
+                                        "objMessage": {
+                                            "properties": {
+                                                "subject": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "123 "
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Wrong credentials response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "example": "The id field is required."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Amenities"
+                ],
+                "summary": "Crear un Amenitie",
+                "description": "Crear un Amenitie (con Token)",
+                "operationId": "amenitiecreate",
+                "requestBody": {
+                    "description": "Datos del amenitie",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "location_id",
+                                    "type_amenities_id",
+                                    "name",
+                                    "lot",
+                                    "charge",
+                                    "mobile_numer"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": 1
+                                    },
+                                    "location_id": {
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": 1
+                                    },
+                                    "type_amenities_id": {
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": 1
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "Quincho 1"
+                                    },
+                                    "lot": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "268"
+                                    },
+                                    "charge": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "Encargado Raul"
+                                    },
+                                    "mobile_numer": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "898465468"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Message successfully registered"
+                                        },
+                                        "objMessage": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "Quincho 1"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Wrong credentials response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user_id": {
+                                            "type": "number",
+                                            "example": "The user_id field is required."
+                                        },
+                                        "location_id": {
+                                            "type": "number",
+                                            "example": "The location_id field is required."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
         "/auth/login": {
             "post": {
                 "tags": [
@@ -1460,11 +1741,11 @@
         "/api/v1/location/lot/{location_id}": {
             "get": {
                 "tags": [
-                    "Barrios"
+                    "Lotes"
                 ],
                 "summary": "Listar lotes en el Barrio",
                 "description": "Listar lotes en el Barrio (con Token)",
-                "operationId": "LocationLotsGet",
+                "operationId": "LotsGet",
                 "parameters": [
                     {
                         "name": "location_id",
@@ -1507,6 +1788,217 @@
                                         "error": {
                                             "type": "string",
                                             "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/location/lotAll": {
+            "get": {
+                "tags": [
+                    "Lotes"
+                ],
+                "summary": "Listar todos los lotes",
+                "description": "Listar todos los lotes (con Token)",
+                "operationId": "LotAllsGet",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ok"
+                                        },
+                                        "obj": {
+                                            "type": "string",
+                                            "example": "array()"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Error: Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/location/lotCreate": {
+            "post": {
+                "tags": [
+                    "Lotes"
+                ],
+                "summary": "Crear un lote",
+                "description": "Crear un lote (con Token)",
+                "operationId": "LotCreate",
+                "requestBody": {
+                    "description": "Datos del Lote",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "location_id",
+                                    "user_id",
+                                    "name",
+                                    "state",
+                                    "situation"
+                                ],
+                                "properties": {
+                                    "location_id": {
+                                        "description": "Id del barrio",
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "1"
+                                    },
+                                    "user_id": {
+                                        "description": "Id del usuario dueño del lote",
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "1"
+                                    },
+                                    "license": {
+                                        "description": "licencia",
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "12321"
+                                    },
+                                    "address": {
+                                        "description": "direccion",
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": " av siempre viva"
+                                    },
+                                    "allow": {
+                                        "description": "booleanos de si esta habilitado o no",
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "1"
+                                    },
+                                    "latitude": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "72.12321321"
+                                    },
+                                    "longitude": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "54.21321321"
+                                    },
+                                    "census": {
+                                        "description": "padron",
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "23"
+                                    },
+                                    "lot": {
+                                        "description": "n° lote",
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "123"
+                                    },
+                                    "state": {
+                                        "description": "estado solo permite vivienda, lote vacio , obra",
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "obra"
+                                    },
+                                    "situation": {
+                                        "description": "situacion solo permite propietario o inquilino",
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "inquilino"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Location successfully registered"
+                                        },
+                                        "objLocation": {
+                                            "properties": {
+                                                "obj": {
+                                                    "type": "string",
+                                                    "example": "array()"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Wrong credentials response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "name": {
+                                            "type": "string",
+                                            "example": "The name field is required."
                                         }
                                     },
                                     "type": "object"

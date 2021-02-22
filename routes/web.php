@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\AmenitieController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\NotificationController;
@@ -47,6 +48,8 @@ Route::group([
     Route::post('/location', [LocationController::class, 'store']);
     Route::put('/location', [LocationController::class, 'update']);
     Route::get('/location/lot/{location_id?}', [LocationController::class, 'locationLot']);
+    Route::get('/location/lotAll', [LocationController::class, 'allLocationLot']);
+    Route::get('/location/lotCreate', [LocationController::class, 'createLot']);
 
     Route::get('/document', [DocumentController::class, 'show']);
     Route::post('/document', [DocumentController::class, 'store']);
@@ -62,6 +65,10 @@ Route::group([
     Route::get('/notification', [NotificationController::class, 'show']);
     Route::post('/notification', [NotificationController::class, 'store']);
     Route::put('/notification', [NotificationController::class, 'update']);
+
+    Route::get('/amenitie', [AmenitieController::class, 'show']);
+    Route::post('/amenitie', [AmenitieController::class, 'store']);
+    Route::put('/amenitie', [AmenitieController::class, 'update']);
 
     Route::post('/message', [MessageController::class, 'store']);
     Route::put('/message', [MessageController::class, 'update']);

@@ -236,7 +236,7 @@ class MessageController extends Controller
 
         if(auth()->user()->myFirstRols() != "MASTER_ROL"){
 
-            $messages =  $messages->whereOpened(1)->where("messages.fk_location_id",auth()->user()->myLocation());
+            $messages =  $messages->whereOpened(1)->whereIn("messages.fk_location_id",auth()->user()->myLocation());
         }
 
         $messages = $messages->get([
