@@ -37,7 +37,8 @@ class NotificationTest extends TestCase
             'user_id' => 1,
             'location_id' => 1,
             'body' => "Se habilito un nuevo ginmasio",
-            'subject' => "Nuevo gimnasio"
+            'subject' => "Nuevo gimnasio",
+            'priority' => "normal"
             ]);
 
         $response
