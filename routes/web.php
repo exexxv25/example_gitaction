@@ -10,6 +10,7 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\MessageHistoryController;
+use App\Http\Controllers\AmenitiesReservationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +44,8 @@ Route::group([
 
     Route::post('/user/find/passport', [AuthController::class, 'existPassport']);
 
+    Route::resource('/amenitie/reservacion', AmenitiesReservationController::class);
+
     Route::get('/location/district/{state_id?}', [LocationController::class, 'districtArg']);
     Route::get('/location/state', [LocationController::class, 'estateArg']);
     Route::get('/location', [LocationController::class, 'show']);
@@ -50,7 +53,7 @@ Route::group([
     Route::put('/location', [LocationController::class, 'update']);
     Route::get('/location/lot/{location_id?}', [LocationController::class, 'locationLot']);
     Route::get('/location/lotAll', [LocationController::class, 'allLocationLot']);
-    Route::get('/location/lotCreate', [LocationController::class, 'createLot']);
+    Route::post('/location/lotCreate', [LocationController::class, 'createLot']);
 
     Route::get('/document', [DocumentController::class, 'show']);
     Route::post('/document', [DocumentController::class, 'store']);

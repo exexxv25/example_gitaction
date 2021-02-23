@@ -286,6 +286,71 @@
                 ]
             }
         },
+        "/api/v1/amenitie/reservacion/{amenities_id}": {
+            "get": {
+                "tags": [
+                    "Amenities"
+                ],
+                "summary": "Listar de reservas de Amenities (mes)",
+                "description": "Listar de reservas de Amenities (con Token)",
+                "operationId": "ReserveAmenitiesGet",
+                "parameters": [
+                    {
+                        "name": "state_id",
+                        "in": "path",
+                        "description": "ID del Amenitie",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ok"
+                                        },
+                                        "obj": {
+                                            "type": "string",
+                                            "example": "array()"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Error: Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
         "/auth/login": {
             "post": {
                 "tags": [

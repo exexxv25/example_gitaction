@@ -17,7 +17,8 @@ class CreateLotUsersTable extends Migration
             $table->id();
             $table->bigInteger('fk_user_id')->nullable();
             $table->bigInteger('fk_location_id')->nullable();
-            $table->string('name');
+            $table->string('name')->nullable();
+            $table->string('comment')->nullable();
             $table->timestamps();
         });
     }

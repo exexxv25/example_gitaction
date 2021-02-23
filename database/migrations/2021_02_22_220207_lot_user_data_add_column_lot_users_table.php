@@ -13,7 +13,7 @@ class LotUserDataAddColumnLotUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('amenities', function (Blueprint $table) {
+        Schema::table('lot_users', function (Blueprint $table) {
             $table->string("license")->nullable();
             $table->string("address")->nullable();
             $table->boolean("allow")->default(1);
@@ -32,7 +32,7 @@ class LotUserDataAddColumnLotUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('amenities', function (Blueprint $table) {
+        Schema::table('lot_users', function (Blueprint $table) {
             $table->dropColumn('priority');
             $table->dropColumn("license");
             $table->dropColumn("address");

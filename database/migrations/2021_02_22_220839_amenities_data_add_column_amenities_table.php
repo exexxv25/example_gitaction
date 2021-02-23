@@ -13,7 +13,7 @@ class AmenitiesDataAddColumnAmenitiesTable extends Migration
      */
     public function up()
     {
-        Schema::table('lot_users', function (Blueprint $table) {
+        Schema::table('amenities', function (Blueprint $table) {
             $table->boolean("allow")->default(1);
         });
     }
@@ -25,7 +25,7 @@ class AmenitiesDataAddColumnAmenitiesTable extends Migration
      */
     public function down()
     {
-        Schema::table('lot_users', function (Blueprint $table) {
+        Schema::table('amenities', function (Blueprint $table) {
             $table->dropColumn('allow');
 
         });
