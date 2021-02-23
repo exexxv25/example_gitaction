@@ -236,11 +236,11 @@ class UserController extends Controller
 
                 foreach ($request->status as $key => $value) {
 
-                $rolflow = RolFlow::where("fk_user_id",$request->relative_id)->where("fk_flow_permission_id",$value->type)->first();
+                $rolflow = RolFlow::where("fk_user_id",$request->relative_id)->where("fk_flow_permission_id",Flow::where("description",$value->type)->first()->id)->first();
 
                     if ($rolflow) {
 
-                        $rolflow->fk_type_permission_id = ($request->active)? $permission->id : null;
+                        $rolflow->fk_type_permission_id = ($value->active)? $permission : null;
                         $rolflow->save();
 
                     } else {
@@ -253,7 +253,7 @@ class UserController extends Controller
                             "fk_user_id" => $request->relative_id,
                             "fk_lot_user_id" => $request->location_id,
                             "fk_rol_id" => $rol,
-                            "fk_flow_permission_id" => $request->flow,
+                            "fk_flow_permission_id" => Flow::where("description",$value->type)->first()->id,
                             "fk_type_permission_id" => ($request->active)? $permission->id : null,
                         ]);
 

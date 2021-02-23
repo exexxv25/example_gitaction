@@ -54,6 +54,26 @@ class RolFlow extends Model
     public static function mypermisions($user){
 
 
+        $Flow = [
+            "dashboard",
+            "documentos",
+            "licencias",
+            "gestiones",
+            "autorizaciones",
+            "calendario",
+            "guia_de_servicios",
+            "clima",
+            "encuestas",
+            "camaras",
+            "galeria",
+            "estado_cc",
+            "expensas",
+            "consulta_de_personas",
+            "horarios"
+        ];
+
+        $flow=array();
+
         $autorizations = self::leftJoin('flows','flows.id','=','rol_flows.fk_flow_permission_id')
         ->leftJoin('type_permissions','type_permissions.id','=','rol_flows.fk_type_permission_id')
         ->leftJoin('rols','rols.id','=','rol_flows.fk_rol_id')
@@ -73,7 +93,16 @@ class RolFlow extends Model
 
         if(!isset($roles[0])){
 
-            return "SIN ROL ASIGNADO";
+            foreach ($Flow as $key => $value) {
+
+                if(!isset($flow[$value])){
+
+                    $flow[$value] = ["active" => false];
+                }
+
+            }
+
+            return $flow;
         }
 
 
@@ -91,8 +120,6 @@ class RolFlow extends Model
 
             return array("error" => "configuracion de permisos");
         }
-
-        $flow=array();
 
         foreach ($locations as $key => $location) {
 
@@ -121,24 +148,6 @@ class RolFlow extends Model
                     }
                 }
             }
-
-            $Flow = [
-                "dashboard",
-                "documentos",
-                "licencias",
-                "gestiones",
-                "autorizaciones",
-                "calendario",
-                "guia_de_servicios",
-                "clima",
-                "encuestas",
-                "camaras",
-                "galeria",
-                "estado_cc",
-                "expensas",
-                "consulta_de_personas",
-                "horarios"
-            ];
 
             foreach ($Flow as $key => $value) {
 
