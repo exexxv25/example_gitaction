@@ -193,4 +193,5 @@ class User extends Authenticatable implements JWTSubject
             return array_column($locations,"id");
 
         }
+
 }

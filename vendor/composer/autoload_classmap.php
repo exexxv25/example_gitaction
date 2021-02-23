@@ -58,6 +58,7 @@ return array(
     'App\\Models\\ProviderTypeService' => $baseDir . '/app/Models/ProviderTypeService.php',
     'App\\Models\\Rol' => $baseDir . '/app/Models/Rol.php',
     'App\\Models\\RolFlow' => $baseDir . '/app/Models/RolFlow.php',
+    'App\\Models\\TypeAmenity' => $baseDir . '/app/Models/TypeAmenity.php',
     'App\\Models\\TypeInvited' => $baseDir . '/app/Models/TypeInvited.php',
     'App\\Models\\TypeMessage' => $baseDir . '/app/Models/TypeMessage.php',
     'App\\Models\\TypePermission' => $baseDir . '/app/Models/TypePermission.php',

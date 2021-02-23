@@ -81,9 +81,19 @@ class UserController extends Controller
 
         foreach ($users as $key => $value) {
 
-            $data = RolFlow::dataEs($value);
+            $data = RolFlow::mypermisions($value);
 
-            array_push($myRelative, ['fullname' => $value->name.' '.$value->lastname, 'id' => $value->id, 'permisos' => $data]);
+            $myrol = Rol::myRols($value);
+
+            array_push($myRelative, [
+                'fullname' => $value->name.' '.$value->lastname,
+                'id' => $value->id,
+                'canEdit' => false,
+                'open' => false,
+                'telefono' => $value->phone,
+                'type' => ($myrol[0] != "LICENCIADO_ROL")? "Licenciado" : "Titular",
+                'permisos' => $data
+            ]);
         }
 
 

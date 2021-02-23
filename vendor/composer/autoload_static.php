@@ -679,6 +679,7 @@ class ComposerStaticInit5fb6e5e2f6439f203d4c52248037a551
         'App\\Models\\ProviderTypeService' => __DIR__ . '/../..' . '/app/Models/ProviderTypeService.php',
         'App\\Models\\Rol' => __DIR__ . '/../..' . '/app/Models/Rol.php',
         'App\\Models\\RolFlow' => __DIR__ . '/../..' . '/app/Models/RolFlow.php',
+        'App\\Models\\TypeAmenity' => __DIR__ . '/../..' . '/app/Models/TypeAmenity.php',
         'App\\Models\\TypeInvited' => __DIR__ . '/../..' . '/app/Models/TypeInvited.php',
         'App\\Models\\TypeMessage' => __DIR__ . '/../..' . '/app/Models/TypeMessage.php',
         'App\\Models\\TypePermission' => __DIR__ . '/../..' . '/app/Models/TypePermission.php',

@@ -283,5 +283,44 @@ class AmenitieController extends Controller
         return response()->json($amenities, 200);
     }
 
+    public function reservation(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'user_id'     => 'required|int',
+            'location_id' => 'required|int',
+            'type_amenities_id'  => 'required|int',
+            'name'  => 'required|string',
+        ]);
 
+        if ($validator->fails()) {
+            return response()->json(['type' => 'data' , 'error' => $validator->errors()], 422);
+        }
+
+        $notification = Amenity::create([
+            'fk_user_id' => $request->user_id,
+            'fk_location_id' => $request->location_id,
+            'fk_type_amenities_id' => $request->type_amenities_id,
+            'name' => $request->name,
+            'lot' => (isset($request->lot))? $request->lot : null,
+            'charge' => (isset($request->charge))? $request->charge : null,
+            'mobile_number' => (isset($request->mobile_number))? $request->mobile_number : null
+        ]);
+            //falta guardar archivo si es que se envia
+            // //imagenes storage
+            // $img   = $request->file('file');
+            // $extention = strtolower($img->getClientOriginalExtension());
+            // $filename  = strtolower(str_replace(" ","_","named")).'.'.$extention;
+            // Storage::disk('data')->put($filename,  File::get($img));
+            //     foreach($request->file('files') as $uploadedFile){
+            //         $filename = time() . '_' . $uploadedFile->getClientOriginalName();
+            //          $path = $uploadedFile->store($filename, 'uploads');
+            //          $fileStore = new FileStore();
+            //          $fileStore->file_id = $notification->id;
+            //          $fileStore->name = $uploadedFile->getClientOriginalName();
+            //          $fileStore->path = $path;
+            //          $fileStore->save();
+            //   }
+
+        return response()->json($notification, 201);
+    }
 }

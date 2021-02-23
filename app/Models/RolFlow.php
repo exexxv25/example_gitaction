@@ -51,6 +51,108 @@ class RolFlow extends Model
 
     }
 
+    public static function mypermisions($user){
+
+
+        $autorizations = self::leftJoin('flows','flows.id','=','rol_flows.fk_flow_permission_id')
+        ->leftJoin('type_permissions','type_permissions.id','=','rol_flows.fk_type_permission_id')
+        ->leftJoin('rols','rols.id','=','rol_flows.fk_rol_id')
+        ->leftJoin('users','users.id','=','rol_flows.fk_user_id')
+        ->leftJoin('location_users','location_users.fk_user_id','=','users.id')
+        ->leftJoin('locations','locations.id','=','location_users.fk_location_id')
+        ->where("users.id",$user->id)
+        ->get([
+                'flows.description as flujo',
+                'type_permissions.description as permiso',
+                'rols.name as role',
+                'locations.name as location_name',
+            ]);
+
+        $roles = array_unique($autorizations->map->role->toArray());
+
+
+        if(!isset($roles[0])){
+
+            return "SIN ROL ASIGNADO";
+        }
+
+
+        if(is_null(array_unique($autorizations->map->location_name->toArray())[0]) && $roles[0] == "MASTER_ROL" ){
+
+            $locations = Location::all(["name"])->toArray();
+
+        }else{
+
+            $locations = array_unique($autorizations->map->location_name->toArray());
+
+        }
+
+        if(is_null($locations[0])){
+
+            return array("error" => "configuracion de permisos");
+        }
+
+        $flow=array();
+
+        foreach ($locations as $key => $location) {
+
+            foreach ($roles as $key => $rol) {
+
+                    foreach ($autorizations->toArray() as $key => $element) {
+
+                    if($element["role"] == $rol){
+
+                                $dataLocation = is_array($location)? $location["name"] : $location;
+
+                                if($element["location_name"] == $dataLocation || is_null($element["location_name"])){
+
+                                    if(!isset($flow[$element["flujo"]])){
+
+                                        $flow[$element["flujo"]] = array("active" => true);
+
+                                    }else{
+
+                                        array_push($flow[$element["flujo"]] , ["active" => true]);
+
+                                    }
+
+                                }
+                        }
+                    }
+                }
+            }
+
+            $Flow = [
+                "dashboard",
+                "documentos",
+                "licencias",
+                "gestiones",
+                "autorizaciones",
+                "calendario",
+                "guia_de_servicios",
+                "clima",
+                "encuestas",
+                "camaras",
+                "galeria",
+                "estado_cc",
+                "expensas",
+                "consulta_de_personas",
+                "horarios"
+            ];
+
+            foreach ($Flow as $key => $value) {
+
+                if(!isset($flow[$value])){
+
+                    $flow[$value] = ["active" => false];
+                }
+
+            }
+
+        return $flow;
+
+}
+
 
     public static function dataEs($user){
 
