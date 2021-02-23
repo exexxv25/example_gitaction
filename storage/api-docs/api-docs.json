@@ -289,7 +289,7 @@
         "/auth/login": {
             "post": {
                 "tags": [
-                    "aa_AUTH"
+                    "Auth"
                 ],
                 "summary": "Login que responde un Token",
                 "description": "Login usando usuario y pass",
@@ -517,7 +517,7 @@
         "/auth/register": {
             "post": {
                 "tags": [
-                    "aa_AUTH"
+                    "Auth"
                 ],
                 "summary": "Registrarse",
                 "description": "Registro de usuarios",
@@ -690,7 +690,7 @@
         "/auth/logout": {
             "post": {
                 "tags": [
-                    "aa_AUTH"
+                    "Auth"
                 ],
                 "summary": "Logout",
                 "description": "Logout ( Primero autorizar los headers con el token JWT provisto en el login)",
@@ -739,7 +739,7 @@
         "/auth/refresh": {
             "post": {
                 "tags": [
-                    "aa_AUTH"
+                    "Auth"
                 ],
                 "summary": "Refrescar Token",
                 "description": "Refrescar Token ( Primero autorizar los headers con el token JWT provisto en el login)",
@@ -3493,27 +3493,6 @@
                 "summary": "Listar mis licenciados",
                 "description": "Listar mis licenciados (con Token)",
                 "operationId": "RelativesGet",
-                "requestBody": {
-                    "description": "El usuario Master lista a todos. El resto solo los suyos",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "relative_id"
-                                ],
-                                "properties": {
-                                    "relative_id": {
-                                        "type": "int",
-                                        "format": "number",
-                                        "example": 1
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "200": {
                         "description": "Ok",

@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Models\TypePermission;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -32,14 +33,6 @@ class UserController extends Controller
      * description="Listar mis licenciados (con Token)",
      * operationId="RelativesGet",
      * tags={"Licencias"},
-     * @OA\RequestBody(
-     *    required=true,
-     *    description="El usuario Master lista a todos. El resto solo los suyos",
-     *    @OA\JsonContent(
-     *       required={"relative_id"},
-     *       @OA\Property(property="relative_id", type="int", format="number", example=1),
-     *    ),
-     * ),
      * @OA\Response(
      *    response=200,
      *    description="Ok",
@@ -70,7 +63,7 @@ class UserController extends Controller
 
         if(auth()->user()->myFirstRols() != "MASTER_ROL"){
 
-            $users = User::whereIsNotNull("user_relative")->get();
+            $users = User::whereNotNull("user_relative")->get();
 
         }else{
 
@@ -173,14 +166,14 @@ class UserController extends Controller
                 [
                     "name"=> $request->name,
                     "password"=> bcrypt(1357910882221123123123123222),
-                    "password_confirmation"=> bcrypt(1357910882221123123123123222),
+                    // "password_confirmation"=> bcrypt(1357910882221123123123123222),
                     "allow"=> "1",
                     "lastname"=> $request->lastname,
                     "passport"=> 87654321,
                     "phone"=> 12345678,
                     "email"=> $request->email,
                     "avatar"=> "",
-                    "user_relative" => $request->user_id
+                    "user_relative" => auth()->user()->id
                 ]);
 
                 $location = LocationUser::create([
@@ -188,12 +181,12 @@ class UserController extends Controller
                     'fk_location_id' => $request->location_id
                 ]);
 
-                $token = Password::getRepository()->create($relative);
+                // $token = Password::getRepository()->create($relative);
 
-                Mail::send(['text' => 'emails.password'], ['token' => $token], function (Message $message) use ($relative) {
-                    $message->subject(config('app.name') . ' Password Reset Link');
-                    $message->to($relative->email);
-                });
+                // Mail::send(['text' => 'emails.password'], ['token' => $token], function (Message $message) use ($relative) {
+                //     $message->subject(config('app.name') . ' Password Reset Link');
+                //     $message->to($relative->email);
+                // });
 
 
                 if(!isset($request->rol) OR $request->rol == "LICENCIA_ROL"){
@@ -209,11 +202,12 @@ class UserController extends Controller
                         "fk_lot_user_id" => $request->location_id,
                         "fk_rol_id" => $rol,
                         "fk_flow_permission_id" => $flow,
-                        "fk_type_permission_id" => $permission->id
+                        "fk_type_permission_id" => $permission
                     ]);
 
                 }
                 $request->relative_id = $relative->id;
+
         }
 
 
@@ -257,13 +251,20 @@ class UserController extends Controller
                     }
                 }
 
-                $response = User::dataEs(User::where("user_relative",$request->user_id)->where("id",$request->relative_id)->first());
+                $response = User::dataEs(User::where("user_relative",$request->user_id)->where("id",$request->relative_id)->get());
 
                 return response()->json($response, 200);
 
             } catch (\Exception $th) {
                 return response()->json(['type' => 'sql' , 'error' => $th->getMessage()], 422);
             }
+
+        }else{
+
+            $response = User::dataEs(User::where("user_relative",$request->user_id)->where("id",$request->relative_id)->first());
+
+            return response()->json($response, 200);
+
         }
     }
 

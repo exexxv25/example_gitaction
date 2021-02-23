@@ -10,6 +10,7 @@ class RolFlow extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
 
     public static function myPermiss($user_id){
 

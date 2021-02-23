@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Validator;
 use GuzzleHttp\Client;
 use App\Models\Location;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 
 class LocationController extends Controller
 {

@@ -11,6 +11,8 @@ class LocationUser extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public static function dataEs($user_id){
 
     $location = RolFlow::leftJoin('flows','flows.id','=','rol_flows.fk_flow_permission_id')
