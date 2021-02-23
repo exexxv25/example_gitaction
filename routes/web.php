@@ -44,7 +44,7 @@ Route::group([
 
     Route::post('/user/find/passport', [AuthController::class, 'existPassport']);
 
-    Route::resource('/amenitie/reservacion', AmenitiesReservationController::class);
+    Route::resource('/amenitie/reservation', AmenitiesReservationController::class);
 
     Route::get('/location/district/{state_id?}', [LocationController::class, 'districtArg']);
     Route::get('/location/state', [LocationController::class, 'estateArg']);
