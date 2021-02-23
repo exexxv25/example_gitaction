@@ -10,6 +10,10 @@ echo "Deploying application ..."
     # git reset --hard origin/deploy
     git fetch
 
+    git checkout vendor/composer/autoload_classmap.php
+    git checkout vendor/composer/autoload_static.php
+    git checkout vendor/composer/package-versions-deprecated/src/PackageVersions/Versions.php
+
     git pull
     # Install dependencies based on lock file
     composer update -n
