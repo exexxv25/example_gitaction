@@ -91,7 +91,7 @@ class UserController extends Controller
                 'canEdit' => false,
                 'open' => false,
                 'telefono' => $value->phone,
-                'type' => ($myrol[0] != "LICENCIADO_ROL")? "Licenciado" : "Titular",
+                'type' => (isset($myrol[0]))? ($myrol[0] != "LICENCIADO_ROL")? "Licenciado" : "Titular" : "Licenciado",
                 'permisos' => $data
             ]);
         }
