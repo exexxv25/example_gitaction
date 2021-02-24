@@ -276,6 +276,8 @@ class NotificationController extends Controller
 
             $notification = Notification::leftJoin("notification_file_stores","notifications.id","=","notification_file_stores.fk_notification_id")
             ->leftJoin('file_stores','file_stores.id','=','notification_file_stores.fk_file_store_id')
+            ->groupBy('locations.id')
+            ->groupBy('users.id')
             ->get([
                 'notifications.*',
                 'file_stores.locate'
@@ -304,12 +306,13 @@ class NotificationController extends Controller
             ->leftJoin('location_users','location_users.fk_user_id','=','users.id')
             ->leftJoin('locations','locations.id','=','location_users.fk_location_id')
             ->whereIn("locations.id",auth()->user()->myLocation())
-            ->groupBy('locations.name')
+            ->groupBy('locations.id')
+            ->groupBy('users.id')
             ->get([
-                    'users.id',
-                    'users.name as nombre',
-                    'users.lastname as apellido'
-                ]);
+                'users.id',
+                'users.name as nombre',
+                'users.lastname as apellido'
+            ]);
         }
 
         return response()->json( [ "notification" => $notification , "users_location" => $users ], 200);
