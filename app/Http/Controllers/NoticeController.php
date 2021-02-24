@@ -77,6 +77,21 @@ class NoticeController extends Controller
 
     public function store(Request $request)
     {
+
+        try {
+
+            $file = $request->file('image');
+            $filename = 'notice' . time() . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('notice', $filename);
+
+            $storage = FileStore::created([
+                "name" => $filename,
+                "locate" => env("APP_URL")."/storage/notice/".$filename,
+                "size" => 1
+            ]);
+
+        } catch (\Throwable $th) {        }
+
         $validator = Validator::make($request->all(), [
             'user_id'     => 'required|int',
             'location_id' => 'required|int',
@@ -89,30 +104,14 @@ class NoticeController extends Controller
             return response()->json(['type' => 'data' , 'error' => $validator->errors()], 422);
         }
 
-        // dd($request->all());
-
         $notice = Notice::create([
             'fk_user_id' => $request->user_id,
             'fk_location_id' => $request->location_id,
             'expired' => $request->expired,
             'tittle' => $request->tittle,
+            'fk_file_store_id' => (isset($storage))? $storage->id : null,
             'body' => $request->body
         ]);
-            //falta guardar archivo si es que se envia
-            // //imagenes storage
-            // $img   = $request->file('file');
-            // $extention = strtolower($img->getClientOriginalExtension());
-            // $filename  = strtolower(str_replace(" ","_","named")).'.'.$extention;
-            // Storage::disk('data')->put($filename,  File::get($img));
-            //     foreach($request->file('files') as $uploadedFile){
-            //         $filename = time() . '_' . $uploadedFile->getClientOriginalName();
-            //          $path = $uploadedFile->store($filename, 'uploads');
-            //          $fileStore = new FileStore();
-            //          $fileStore->file_id = $notice->id;
-            //          $fileStore->name = $uploadedFile->getClientOriginalName();
-            //          $fileStore->path = $path;
-            //          $fileStore->save();
-            //   }
 
         return response()->json($notice, 201);
     }
@@ -182,6 +181,25 @@ class NoticeController extends Controller
         }
 
         try {
+
+            $file = $request->file('image');
+            $filename = 'notice' . time() . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('notice', $filename);
+
+            $storage = FileStore::created([
+                "name" => $filename,
+                "locate" => env("APP_URL")."/storage/notice/".$filename,
+                "size" => 1
+            ]);
+
+            $noticex = Notice::find($request->id);
+            $noticex->fk_file_store_id = (isset($storage))? $storage->id : null;
+            $noticex->save();
+
+        } catch (\Throwable $th) {        }
+
+
+        try {
             $obj = $request->all();
             $notice = Notice::find($request->id);
             if ($notice) {
@@ -238,6 +256,7 @@ class NoticeController extends Controller
         $notices = Notice::leftJoin('file_stores','file_stores.id','=','notices.fk_file_store_id')
         ->get([
             'notices.*',
+            'file_stores.locate'
         ]);
 
         return response()->json($notices, 200);
