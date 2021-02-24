@@ -165,7 +165,7 @@ final class Versions
   'symfony/polyfill-php70' => 'v1.20.0@5f03a781d984aae42cebd18e7912fa80f02ee644',
   'symfony/stopwatch' => 'v5.2.3@b12274acfab9d9850c52583d136a24398cdf1a0c',
   'theseer/tokenizer' => '1.2.0@75a63c33a8577608444246075ea0af0d052e452a',
-  'laravel/laravel' => 'dev-develop@4a1c29e981d83733dfdae87bb3731da269d20835',
+  'laravel/laravel' => 'dev-develop@8a5d1b81c69e5fde5de1b8e3c5987d56fdbaa003',
 );
 
     private function __construct()

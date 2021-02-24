@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Http\Request;
-use Intervention\Image\Facades\Image as Image;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
@@ -102,15 +101,15 @@ Route::get('/block', function () {
 
 
 
-Route::post('process', function (Request $request) {
-    // cache the file
-    $file = $request->file('images');
+// Route::post('process', function (Request $request) {
+//     // cache the file
+//     $file = $request->file('images');
 
-    // generate a new filename. getClientOriginalExtension() for the file extension
-    $filename = 'profile-photo-' . time() . '.' . $file->getClientOriginalExtension();
+//     // generate a new filename. getClientOriginalExtension() for the file extension
+//     $filename = 'profile-photo-' . time() . '.' . $file->getClientOriginalExtension();
 
-    // save to storage/app/photos as the new $filename
-    $path = $file->storeAs('notifications', $filename);
+//     // save to storage/app/photos as the new $filename
+//     $path = $file->storeAs('notifications', $filename);
 
-    dd(env("APP_URL")."/storage/notifications/".$filename);
-});
+//     dd(env("APP_URL")."/storage/notifications/".$filename);
+// });
