@@ -12,6 +12,8 @@ echo "Deploying application ..."
 
     git checkout vendor/composer/autoload_classmap.php
     git checkout vendor/composer/autoload_static.php
+    git checkout vendor/composer/InstalledVersions.php
+    git checkout vendor/composer/installed.php
     git checkout vendor/composer/package-versions-deprecated/src/PackageVersions/Versions.php
 
     git pull
