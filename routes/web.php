@@ -73,6 +73,8 @@ Route::group([
     Route::get('/amenitie', [AmenitieController::class, 'show']);
     Route::post('/amenitie', [AmenitieController::class, 'store']);
     Route::put('/amenitie', [AmenitieController::class, 'update']);
+    Route::post('/amenitie/type', [AmenitieController::class, 'type']);
+    Route::get('/amenitie/type', [AmenitieController::class, 'showType']);
 
     Route::post('/message', [MessageController::class, 'store']);
     Route::put('/message', [MessageController::class, 'update']);

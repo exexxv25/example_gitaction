@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Amenity;
+use App\Models\TypeAmenity;
 use App\Models\TypeMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+
 class AmenitieController extends Controller
 {
 
@@ -281,6 +283,103 @@ class AmenitieController extends Controller
         ];
 
         return response()->json($amenities, 200);
+    }
+
+    /**
+     * @OA\Post(
+     * path="/api/v1/amenitie/type",
+     * summary="Crear un tipo de Amenitie",
+     * description="Crear un tipo de Amenitie (con Token)",
+     * operationId="typeamenitiecreate",
+     * tags={"Amenities"},
+     * @OA\RequestBody(
+     *    required=true,
+     *    description="Datos del tipo de amenitie",
+     *    @OA\JsonContent(
+     *       required={"description"},
+     *       @OA\Property(property="description", type="string", format="text", example="cancha de.."),
+     *    ),
+     * ),
+     * @OA\Response(
+     *    response=201,
+     *    description="Created",
+     *     @OA\JsonContent(
+     *        @OA\Property(property="message", type="string", example="Message successfully registered"),
+     *        @OA\Property(
+     *           property="objMessage",
+     *           type="object",
+     *          @OA\Property(property="description", type="string", format="text", example="cancha de..")
+     *        )
+     *     )
+     *     ),
+     * @OA\Response(
+     *    response=401,
+     *    description="Wrong credentials response",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="error", type="string", example="Unauthorized")
+     *        )
+     *     ),
+     * @OA\Response(
+     *    response=422,
+     *    description="Unprocessable Entity",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="user_id", type="number", example="The user_id field is required."),
+     *       @OA\Property(property="location_id", type="number", example="The location_id field is required.")
+     *        )
+     *     ),
+     *  security={{ "apiAuth": {} }}
+     * )
+     */
+
+    public function type(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'description'     => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['type' => 'data' , 'error' => $validator->errors()], 422);
+        }
+
+        $notification =    TypeAmenity::create([
+            'description' => $request->description
+
+        ]);
+
+        return response()->json($notification, 201);
+    }
+
+    /**
+     * @OA\Get(
+     * path="/api/v1/amenitie/type",
+     * summary="Listar los tipos de Amenities",
+     * description="Listar los tipos de Amenities (con Token)",
+     * operationId="typeamenitieGet",
+     * tags={"Amenities"},
+     * @OA\Response(
+     *    response=200,
+     *    description="Ok",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="message", type="string", example="Ok"),
+     *       @OA\Property(property="obj", type="string", example="array()"),
+     *        )
+     *     ),
+     * @OA\Response(
+     *    response=401,
+     *    description="Error: Unauthorized",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="error", type="string", example="Unauthenticated"),
+     *        )
+     *     ),
+     *  security={{ "apiAuth": {} }}
+     * )
+     */
+
+    public function showType()
+    {
+        $type = TypeAmenity::all();
+
+        return response()->json($type, 201);
     }
 
 }
