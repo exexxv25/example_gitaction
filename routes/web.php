@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image as Image;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
@@ -85,6 +87,7 @@ Route::group([
     Route::post('/history/message/response', [MessageHistoryController::class, 'store']);
     Route::put('/history/message/edit', [MessageHistoryController::class, 'update']);
 
+
 });
 
 Route::get('/', function () {
@@ -96,3 +99,18 @@ Route::get('/block', function () {
     return response()->json(['type' => 'data' , 'error' => "Unauthorized"], 401);
 
 })->name('block');
+
+
+
+Route::post('process', function (Request $request) {
+    // cache the file
+    $file = $request->file('images');
+
+    // generate a new filename. getClientOriginalExtension() for the file extension
+    $filename = 'profile-photo-' . time() . '.' . $file->getClientOriginalExtension();
+
+    // save to storage/app/photos as the new $filename
+    $path = $file->storeAs('notifications', $filename);
+
+    dd(env("APP_URL")."/storage/notifications/".$filename);
+});

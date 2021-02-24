@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FileStore;
 use App\Models\User;
 use App\Models\RolFlow;
 use App\Models\Notification;
+use App\Models\NotificationFileStore;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
@@ -102,21 +104,29 @@ class NotificationController extends Controller
             'body' => $request->body,
             "priority" => $request->priority
         ]);
-            //falta guardar archivo si es que se envia
-            // //imagenes storage
-            // $img   = $request->file('file');
-            // $extention = strtolower($img->getClientOriginalExtension());
-            // $filename  = strtolower(str_replace(" ","_","named")).'.'.$extention;
-            // Storage::disk('data')->put($filename,  File::get($img));
-            //     foreach($request->file('files') as $uploadedFile){
-            //         $filename = time() . '_' . $uploadedFile->getClientOriginalName();
-            //          $path = $uploadedFile->store($filename, 'uploads');
-            //          $fileStore = new FileStore();
-            //          $fileStore->file_id = $notification->id;
-            //          $fileStore->name = $uploadedFile->getClientOriginalName();
-            //          $fileStore->path = $path;
-            //          $fileStore->save();
-            //   }
+
+        try {
+
+            $file = $request->file('image');
+            $filename = 'notifications' . time() . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('notifications', $filename);
+
+            $storage = FileStore::created([
+                "name" => $filename,
+                "locate" => env("APP_URL")."/storage/notifications/".$filename,
+                "size" => 1
+            ]);
+
+            NotificationFileStore::created([
+                "fk_notification_id" => $notification->id,
+                "fk_file_store_id" => $storage->id
+
+            ]);
+
+        } catch (\Throwable $th) {
+
+
+        }
 
         return response()->json($notification, 201);
     }
@@ -198,6 +208,30 @@ class NotificationController extends Controller
                 }
                 $notification->save();
 
+                try {
+
+                    $file = $request->file('image');
+                    $filename = 'notifications' . time() . '.' . $file->getClientOriginalExtension();
+                    $path = $file->storeAs('notifications', $filename);
+
+                    $storage = FileStore::created([
+                        "name" => $filename,
+                        "locate" => env("APP_URL")."/storage/notifications/".$filename,
+                        "size" => 1
+                    ]);
+
+                    NotificationFileStore::created([
+                        "fk_notification_id" => $notification->id,
+                        "fk_file_store_id" => $storage->id
+
+                    ]);
+
+                } catch (\Throwable $th) {
+
+
+                }
+
+
                 return response()->json($notification, 200);
 
             } else {
@@ -244,6 +278,7 @@ class NotificationController extends Controller
             ->leftJoin('file_stores','file_stores.id','=','notification_file_stores.fk_file_store_id')
             ->get([
                 'notifications.*',
+                'file_stores.locate'
             ]);
 
             $users = User::all([
@@ -259,6 +294,7 @@ class NotificationController extends Controller
             ->whereIn("notifications.fk_location_id",auth()->user()->myLocation())
             ->get([
                 'notifications.*',
+                'file_stores.locate'
             ]);
 
             $users = RolFlow::leftJoin('flows','flows.id','=','rol_flows.fk_flow_permission_id')

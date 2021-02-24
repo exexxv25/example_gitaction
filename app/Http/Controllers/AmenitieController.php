@@ -95,21 +95,6 @@ class AmenitieController extends Controller
             'charge' => (isset($request->charge))? $request->charge : null,
             'mobile_number' => (isset($request->mobile_number))? $request->mobile_number : null
         ]);
-            //falta guardar archivo si es que se envia
-            // //imagenes storage
-            // $img   = $request->file('file');
-            // $extention = strtolower($img->getClientOriginalExtension());
-            // $filename  = strtolower(str_replace(" ","_","named")).'.'.$extention;
-            // Storage::disk('data')->put($filename,  File::get($img));
-            //     foreach($request->file('files') as $uploadedFile){
-            //         $filename = time() . '_' . $uploadedFile->getClientOriginalName();
-            //          $path = $uploadedFile->store($filename, 'uploads');
-            //          $fileStore = new FileStore();
-            //          $fileStore->file_id = $notification->id;
-            //          $fileStore->name = $uploadedFile->getClientOriginalName();
-            //          $fileStore->path = $path;
-            //          $fileStore->save();
-            //   }
 
         return response()->json($notification, 201);
     }
