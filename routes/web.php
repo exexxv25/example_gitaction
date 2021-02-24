@@ -67,6 +67,9 @@ Route::group([
     Route::get('/relative', [UserController::class, 'myRelative']);
     Route::post('/relative', [UserController::class, 'createOrUodateRelative']);
 
+    Route::get('/userAll', [UserController::class, 'userAll']);
+
+
     Route::get('/notification', [NotificationController::class, 'show']);
     Route::post('/notification', [NotificationController::class, 'store']);
     Route::put('/notification', [NotificationController::class, 'update']);

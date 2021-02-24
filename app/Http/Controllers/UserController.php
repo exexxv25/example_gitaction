@@ -279,5 +279,11 @@ class UserController extends Controller
     }
 
 
+    public function userAll(){
+
+        return response()->json(User::all(), 200);
+
+    }
+
 
 }
