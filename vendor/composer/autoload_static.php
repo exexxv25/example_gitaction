@@ -631,6 +631,7 @@ class ComposerStaticInit5fb6e5e2f6439f203d4c52248037a551
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\AmenitieController' => __DIR__ . '/../..' . '/app/Http/Controllers/AmenitieController.php',
         'App\\Http\\Controllers\\AmenitiesDateController' => __DIR__ . '/../..' . '/app/Http/Controllers/AmenitiesDateController.php',
+        'App\\Http\\Controllers\\AmenitiesReservationController' => __DIR__ . '/../..' . '/app/Http/Controllers/AmenitiesReservationController.php',
         'App\\Http\\Controllers\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/AuthController.php',
         'App\\Http\\Controllers\\AutorizationController' => __DIR__ . '/../..' . '/app/Http/Controllers/AutorizationController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',

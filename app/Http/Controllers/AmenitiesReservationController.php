@@ -29,56 +29,97 @@ class AmenitiesReservationController extends Controller
         //
     }
 
+
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @OA\Post(
+     * path="/api/v1/amenitie/reservation",
+     * summary="Reservar un Amenitie",
+     * description="Reservar un Amenitie (con Token)",
+     * operationId="reservationamenitiecreate",
+     * tags={"Amenities"},
+     * @OA\RequestBody(
+     *    required=true,
+     *    description="Datos de la reserva del amenitie",
+     *    @OA\JsonContent(
+     *       required={"amenities_id","date","amenities_date"},
+     *       @OA\Property(property="user_id", description="opcional" , type="int", format="number", example=4),
+     *       @OA\Property(property="amenities_date", type="int", format="number", example=1),
+     *       @OA\Property(property="amenities_id", type="int", format="number", example=1),
+     *       @OA\Property(property="date", type="date", format="date", example="2021-02-28")
+     *    ),
+     * ),
+     * @OA\Response(
+     *    response=201,
+     *    description="Created",
+     *     @OA\JsonContent(
+     *        @OA\Property(property="message", type="string", example="Message successfully registered"),
+     *        @OA\Property(
+     *           property="objMessage",
+     *           type="object",
+     *          @OA\Property(property="id", type="string", format="text", example="1")
+     *        )
+     *     )
+     *     ),
+     * @OA\Response(
+     *    response=401,
+     *    description="Wrong credentials response",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="error", type="string", example="Unauthorized")
+     *        )
+     *     ),
+     * @OA\Response(
+     *    response=422,
+     *    description="Unprocessable Entity",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="user_id", type="number", example="The user_id field is required."),
+     *       @OA\Property(property="location_id", type="number", example="The location_id field is required.")
+     *        )
+     *     ),
+     *  security={{ "apiAuth": {} }}
+     * )
      */
+
     public function store(Request $request)
     {
 
-            $validator = Validator::make($request->all(), [
-                'user_id'     => 'required|int',
-                'amenities_id' => 'required|int',
-                'date' => 'required|date',
-                'amenities_date'  => 'required|int'
-            ]);
+        $validator = Validator::make($request->all(), [
+            'amenities_id' => 'required|int',
+            'date' => 'required|date',
+            'amenities_date'  => 'required|int'
+        ]);
 
-            if ($validator->fails()) {
-                return response()->json(['type' => 'data' , 'error' => $validator->errors()], 422);
-            }
+        if ($validator->fails()) {
+            return response()->json(['type' => 'data' , 'error' => $validator->errors()], 422);
+        }
 
-            $notification = AmenitiesReservation::create([
-                'fk_user_id' => $request->user_id,
+        if(AmenitiesReservation::where('fk_user_id',(isset($request->user_id))? $request->user_id : auth()->user()->id  )
+        ->where('fk_amenities_id',$request->amenities_id)
+        ->where('date',$request->date)
+        ->where('opened',1)
+        ->where('fk_amenities_date',$request->amenities_date)->exists()){
+
+            return response()->json(['type' => 'validation' , 'error' => "la fecha y horario ya fueron reservados"], 422);
+
+        }else{
+
+
+            $reservation = AmenitiesReservation::create([
+                'fk_user_id' => (isset($request->user_id))? $request->user_id : auth()->user()->id,
                 'fk_amenities_id' => $request->amenities_id,
-                'fk_amenities_date' => $request->type_amenities_id,
+                'fk_amenities_date' => $request->amenities_date,
                 'date' => $request->date,
                 'opened' => 1
             ]);
-                //falta guardar archivo si es que se envia
-                // //imagenes storage
-                // $img   = $request->file('file');
-                // $extention = strtolower($img->getClientOriginalExtension());
-                // $filename  = strtolower(str_replace(" ","_","named")).'.'.$extention;
-                // Storage::disk('data')->put($filename,  File::get($img));
-                //     foreach($request->file('files') as $uploadedFile){
-                //         $filename = time() . '_' . $uploadedFile->getClientOriginalName();
-                //          $path = $uploadedFile->store($filename, 'uploads');
-                //          $fileStore = new FileStore();
-                //          $fileStore->file_id = $notification->id;
-                //          $fileStore->name = $uploadedFile->getClientOriginalName();
-                //          $fileStore->path = $path;
-                //          $fileStore->save();
-                //   }
 
-            return response()->json($notification, 201);
+        }
+
+        return response()->json($reservation, 201);
     }
 
 
     /**
      * @OA\Get(
-     * path="/api/v1/amenitie/reservacion/{amenities_id}",
+     * path="/api/v1/amenitie/reservation/{amenities_id}",
      * summary="Listar de reservas de Amenities (mes)",
      * description="Listar de reservas de Amenities (con Token)",
      * operationId="ReserveAmenitiesGet",
@@ -86,7 +127,7 @@ class AmenitiesReservationController extends Controller
      * @OA\Parameter(
      *         description="ID del Amenitie",
      *         in="path",
-     *         name="state_id",
+     *         name="amenities_id",
      *         required=true,
      *         @OA\Schema(
      *             format="int64",
@@ -118,7 +159,7 @@ class AmenitiesReservationController extends Controller
      * @param  \App\Models\AmenitiesDate  $amenitiesDate
      * @return \Illuminate\Http\Response
      */
-    public function show(AmenitiesReservation $amenitiesReservation)
+    public function show($reservation)
     {
 
         $toDay = date('Y-m-d');
@@ -128,64 +169,58 @@ class AmenitiesReservationController extends Controller
         $reserve = AmenitiesReservation::leftJoin("amenities_dates","amenities_dates.id","=","amenities_reservations.fk_amenities_date")
         ->where("amenities_reservations.date", ">=" , $toDay)
         ->where("amenities_reservations.opened",1)
-        ->where("amenities_reservations.fk_amenities_id",$amenitiesReservation)
+        ->whereNotNull("amenities_reservations.fk_amenities_date")
+        ->where("amenities_reservations.fk_amenities_id",$reservation)
         ->get();
 
-        foreach ($reserve as $key => $value) {
+        for ($x=0; $x < 30; $x++) {
 
             if(!isset($days[$toDay])){
 
-                $$days[$toDay] = [];
+                $days[$toDay] = [];
+
+                for ($i=0; $i < $turns->count(); $i++) {
+
+                    array_push($days[$toDay],
+                            (object)[
+                                "id_franja" => $turns[$i]->id,
+                                "franja" => $turns[$i]->init." ".$turns[$i]->expired,
+                                "disponible" => "si"
+                            ],
+                        );
+
+                    }
             }
+            $i=0;
+            $toDay = strtotime($toDay."+ 1 days");
+            $toDay = date("Y-m-d",$toDay);
+
+        }
+        $xxx = 0;
+        foreach ($reserve as $key => $value) {
+
+            foreach ($days[$value->date] as $keysx => $values) {
 
                 for ($f=0; $f < $turns->count(); $f++) {
 
-                    if($value->fk_amenities_date == $turns[$f]->id){
+                    if($days[$value->date][$keysx]->id_franja == $turns[$f]->id ){
 
-                        array_push($$days[$toDay],[
-                            (object)[
+                        if($xxx == 0){
+                            $days[$value->date][$keysx] = (object)[
+                                "id_franja" => $turns[$f]->id,
                                 "franja" => $turns[$f]->init." ".$turns[$f]->expired,
-                                "disponible" => ($value->opened)? "si" : "no"
-                            ],
-                        ]);
-
+                                "disponible" => ($value->opened)? "no" : "si"
+                            ];
+                        }
+                        $xxx++;
                     }else{
 
-                        array_push($$days[$toDay],[
-                            (object)[
-                                "franja" => $turns[$f]->init." ".$turns[$f]->expired,
-                                "disponible" => "si"
-                            ],
-                        ]);
-
+                        $xxx=0;
                     }
                 }
                 $f=0;
             }
-
-            for ($x=0; $x < 30; $x++) {
-
-                if(!isset($days[$toDay])){
-
-                    $days[$toDay] = [];
-
-                    for ($i=0; $i < $turns->count(); $i++) {
-
-                        array_push($days[$toDay],[
-                                (object)[
-                                    "franja" => $turns[$i]->init." ".$turns[$i]->expired,
-                                    "disponible" => "si"
-                                ],
-                            ]);
-
-                        }
-                }
-                $i=0;
-                $toDay = strtotime($toDay."+ 1 days");
-                $toDay = date("Y-m-d",$toDay);
-
-            }
-
+        }
 
             return response()->json($days, 200);
         }

@@ -286,7 +286,125 @@
                 ]
             }
         },
-        "/api/v1/amenitie/reservacion/{amenities_id}": {
+        "/api/v1/amenitie/reservation": {
+            "post": {
+                "tags": [
+                    "Amenities"
+                ],
+                "summary": "Reservar un Amenitie",
+                "description": "Reservar un Amenitie (con Token)",
+                "operationId": "reservationamenitiecreate",
+                "requestBody": {
+                    "description": "Datos de la reserva del amenitie",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "amenities_id",
+                                    "date",
+                                    "amenities_date"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "description": "opcional",
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": 4
+                                    },
+                                    "amenities_date": {
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": 1
+                                    },
+                                    "amenities_id": {
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": 1
+                                    },
+                                    "date": {
+                                        "type": "date",
+                                        "format": "date",
+                                        "example": "2021-02-28"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Message successfully registered"
+                                        },
+                                        "objMessage": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "1"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Wrong credentials response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user_id": {
+                                            "type": "number",
+                                            "example": "The user_id field is required."
+                                        },
+                                        "location_id": {
+                                            "type": "number",
+                                            "example": "The location_id field is required."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/amenitie/reservation/{amenities_id}": {
             "get": {
                 "tags": [
                     "Amenities"
@@ -296,7 +414,7 @@
                 "operationId": "ReserveAmenitiesGet",
                 "parameters": [
                     {
-                        "name": "state_id",
+                        "name": "amenities_id",
                         "in": "path",
                         "description": "ID del Amenitie",
                         "required": true,

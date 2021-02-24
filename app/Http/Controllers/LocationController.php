@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use GuzzleHttp\Client;
+use App\Models\LotUser;
 use App\Models\Location;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class LocationController extends Controller
@@ -556,7 +557,6 @@ class LocationController extends Controller
         $validator = Validator::make($request->all(), [
             'location_id'     => 'required|string',
             'user_id'     => 'required|string',
-            'name'     => 'required|string',
             'state' => [
                 'required',
                 Rule::in(['vivienda', 'obra', 'lote vacio']),
@@ -573,7 +573,7 @@ class LocationController extends Controller
 
         try {
             $obj = $request->all();
-            $location = new Location;
+            $location = new LotUser;
             foreach ($obj as $key => $value) {
 
                 if($key == "location_id"){
