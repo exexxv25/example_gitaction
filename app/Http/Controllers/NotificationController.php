@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\RolFlow;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -236,12 +238,44 @@ class NotificationController extends Controller
 
     public function show(){
 
-        $notification = Notification::leftJoin("notification_file_stores","notifications.id","=","notification_file_stores.fk_notification_id")
-        ->leftJoin('file_stores','file_stores.id','=','notification_file_stores.fk_file_store_id')
-        ->get([
-            'notifications.*',
-        ]);
+        if(auth()->user()->myFirstRols() == "MASTER_ROL"){
 
-        return response()->json($notification, 200);
+            $notification = Notification::leftJoin("notification_file_stores","notifications.id","=","notification_file_stores.fk_notification_id")
+            ->leftJoin('file_stores','file_stores.id','=','notification_file_stores.fk_file_store_id')
+            ->get([
+                'notifications.*',
+            ]);
+
+            $users = User::all([
+                'users.id',
+                'users.name as nombre',
+                'users.lastname as apellido'
+            ]);
+
+        }else{
+
+            $notification = Notification::leftJoin("notification_file_stores","notifications.id","=","notification_file_stores.fk_notification_id")
+            ->leftJoin('file_stores','file_stores.id','=','notification_file_stores.fk_file_store_id')
+            ->whereIn("notifications.fk_location_id",auth()->user()->myLocation())
+            ->get([
+                'notifications.*',
+            ]);
+
+            $users = RolFlow::leftJoin('flows','flows.id','=','rol_flows.fk_flow_permission_id')
+            ->leftJoin('type_permissions','type_permissions.id','=','rol_flows.fk_type_permission_id')
+            ->leftJoin('rols','rols.id','=','rol_flows.fk_rol_id')
+            ->leftJoin('users','users.id','=','rol_flows.fk_user_id')
+            ->leftJoin('location_users','location_users.fk_user_id','=','users.id')
+            ->leftJoin('locations','locations.id','=','location_users.fk_location_id')
+            ->whereIn("locations.id",auth()->user()->myLocation())
+            ->groupBy('locations.name')
+            ->get([
+                    'users.id',
+                    'users.name as nombre',
+                    'users.lastname as apellido'
+                ]);
+        }
+
+        return response()->json( [ "notification" => $notification , "users_location" => $users ], 200);
     }
  }
