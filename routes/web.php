@@ -44,6 +44,7 @@ Route::group([
 ], function ($router) {
 
     Route::post('/user/find/passport', [AuthController::class, 'existPassport']);
+    Route::put('user/edit', [AuthController::class, 'edit']);
 
     Route::resource('/amenitie/reservation', AmenitiesReservationController::class);
 
@@ -55,6 +56,8 @@ Route::group([
     Route::get('/location/lot/{location_id?}', [LocationController::class, 'locationLot']);
     Route::get('/location/lotAll', [LocationController::class, 'allLocationLot']);
     Route::post('/location/lotCreate', [LocationController::class, 'createLot']);
+    Route::post('/location/asignLot', [LocationController::class, 'asignLot']);
+    Route::delete('/location/unasignLot', [LocationController::class, 'unasignLot']);
 
     Route::get('/document', [DocumentController::class, 'show']);
     Route::post('/document', [DocumentController::class, 'store']);

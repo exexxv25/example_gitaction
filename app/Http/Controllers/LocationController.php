@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use GuzzleHttp\Client;
 use App\Models\LotUser;
 use App\Models\Location;
+use App\Models\LocationUser;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
@@ -596,5 +598,163 @@ class LocationController extends Controller
         }
 
         return response()->json($location, 201);
+    }
+
+    /**
+     * @OA\Post(
+     * path="/api/v1/location/asignLot",
+     * summary="Asignar un lote",
+     * description="Asignar un lote (con Token)",
+     * operationId="asigLot",
+     * tags={"Lotes"},
+     * @OA\RequestBody(
+     *    required=true,
+     *    description="Datos para asignar",
+     *    @OA\JsonContent(
+     *       required={"location_id","dni"},
+     *       @OA\Property(property="location_id",description="Id del barrio", type="string",format="text", example="1"),
+     *       @OA\Property(property="dni", type="string",description="Dni del usuario dueño del lote" , format="text", example="1"),
+     *    ),
+     * ),
+     * @OA\Response(
+     *    response=201,
+     *    description="Created",
+     *     @OA\JsonContent(
+     *        @OA\Property(property="message", type="string", example="Location successfully registered"),
+     *        @OA\Property(
+     *           property="objLocation",
+     *           type="object",
+     *           @OA\Property(property="obj", type="string", example="array()"),
+     *        )
+     *     )
+     *     ),
+     * @OA\Response(
+     *    response=401,
+     *    description="Wrong credentials response",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="error", type="string", example="Unauthorized")
+     *        )
+     *     ),
+     * @OA\Response(
+     *    response=422,
+     *    description="Unprocessable Entity",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="user_id", type="string", example="The user_id field is required."),
+     *        )
+     *     ),
+     *  security={{ "apiAuth": {} }}
+     * )
+     */
+
+
+    public function asignLot(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'location_id'     => 'required',
+            'dni'     => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['type' => 'data' , 'error' => $validator->errors()], 422);
+        }
+
+        try {
+
+            $user = User::wherePassport($request->dni)->whereAllow(1)->first();
+
+            if ($user === null) {
+                $user = User::create( ['allow' => 0,'passport' => $request->dni] );
+            }
+
+
+            $location = LocationUser::where('fk_user_id',$user->id)->where('fk_location_id',$request->location_id)->first();
+
+            if ($location === null) {
+
+                $location = LocationUser::create([
+                        'fk_user_id' => $user->id,
+                        'fk_location_id' => $request->location_id
+                    ]);
+            }
+
+
+
+        } catch (\Exception $th) {
+            return response()->json(['type' => 'sql' , 'error' => $th->getMessage()], 422);
+        }
+
+        return response()->json($location, 201);
+    }
+
+
+    /**
+     * @OA\Delete(
+     * path="/api/v1/location/unasignLot",
+     * summary="Desasignar un lote",
+     * description="Desasignar un lote (con Token)",
+     * operationId="unasigLot",
+     * tags={"Lotes"},
+     * @OA\RequestBody(
+     *    required=true,
+     *    description="Datos",
+     *    @OA\JsonContent(
+     *       required={"id"},
+     *       @OA\Property(property="id",description="Id del lote", type="intenger",format="number", example="1")
+     *    ),
+     * ),
+     * @OA\Response(
+     *    response=201,
+     *    description="Created",
+     *     @OA\JsonContent(
+     *        @OA\Property(property="message", type="string", example="Location successfully registered"),
+     *        @OA\Property(
+     *           property="objLocation",
+     *           type="object",
+     *           @OA\Property(property="obj", type="string", example="array()"),
+     *        )
+     *     )
+     *     ),
+     * @OA\Response(
+     *    response=401,
+     *    description="Wrong credentials response",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="error", type="string", example="Unauthorized")
+     *        )
+     *     ),
+     * @OA\Response(
+     *    response=422,
+     *    description="Unprocessable Entity",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="user_id", type="string", example="The user_id field is required."),
+     *        )
+     *     ),
+     *  security={{ "apiAuth": {} }}
+     * )
+     */
+
+    public function unasignLot(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'id'     => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['type' => 'data' , 'error' => $validator->errors()], 422);
+        }
+
+        try {
+
+            $lot = LocationUser::find($request->id);
+            if($lot){
+                $lot = $lot->delete();
+            }
+
+        } catch (\Exception $th) {
+            return response()->json(['type' => 'sql' , 'error' => $th->getMessage()], 422);
+        }
+
+        return response()->json($lot, 202);
     }
 }

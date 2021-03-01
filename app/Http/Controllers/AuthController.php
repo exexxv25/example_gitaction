@@ -153,7 +153,6 @@ class AuthController extends Controller
      *          @OA\Property(property="name", type="string", format="text", example="Administrador"),
      *          @OA\Property(property="password", type="int", format="number", example="12345678"),
      *          @OA\Property(property="password_confirmation", type="int", format="number", example="12345678"),
-     *          @OA\Property(property="allow", type="string", format="boolean", example="1"),
      *          @OA\Property(property="lastname", type="string", format="text", example="admin2Apellido"),
      *          @OA\Property(property="passport", type="int", format="number", example="87654321"),
      *          @OA\Property(property="phone", type="int", format="number", example="12345678"),
@@ -215,6 +214,99 @@ class AuthController extends Controller
             'user' => $user,
         ], 201);
     }
+
+
+    /**
+     * @OA\Put(
+     * path="/api/v1/user/edit",
+     * summary="Editar usuario",
+     * description="Editar de usuarios",
+     * operationId="authEdit",
+     * tags={"Auth"},
+     * @OA\RequestBody(
+     *    required=true,
+     *    description="Datos del usuario",
+     *    @OA\JsonContent(
+     *       required={"id"},
+     *          @OA\Property(property="id", type="integer", format="number", example="1"),
+     *          @OA\Property(property="name", type="string", format="text", example="Administrador"),
+     *          @OA\Property(property="lastname", type="string", format="text", example="admin2Apellido"),
+     *          @OA\Property(property="passport", type="int", format="number", example="87654321"),
+     *          @OA\Property(property="phone", type="int", format="number", example="12345678"),
+     *          @OA\Property(property="email", type="string", format="text", example="admin2@neighbors.com"),
+     *          @OA\Property(property="avatar", type="string", format="text", example="mi_foto2.jpg"),
+     *          @OA\Property(property="user_relative", type="integer", format="number", example="1")
+     *    ),
+     * ),
+     * @OA\Response(
+     *    response=201,
+     *    description="Created",
+     *     @OA\JsonContent(
+     *        @OA\Property(property="message", type="string", example="User successfully registered"),
+     *        @OA\Property(
+     *           property="user",
+     *           type="object",
+     *          @OA\Property(property="habilitado", type="string", format="boolean", example="1"),
+     *          @OA\Property(property="nombre", type="string", format="text", example="adminNombre"),
+     *          @OA\Property(property="apellido", type="string", format="text", example="adminApellido"),
+     *          @OA\Property(property="dni", type="int", format="number", example="87654321"),
+     *          @OA\Property(property="telefono", type="int", format="number", example="12345678"),
+     *          @OA\Property(property="email", type="string", format="text", example="admin@neighbors.com"),
+     *          @OA\Property(property="img", type="string", format="text", example="mi_foto.jpg"),
+     *          @OA\Property(property="uid", type="string", format="text", example="HQ21SD1R1F8S"),
+     *          @OA\Property(property="updated_at", type="string", format="date", example="2021-01-18T15:31:11.000000Z"),
+     *          @OA\Property(property="created_at", type="string", format="date", example="2021-01-18T15:31:11.000000Z"),
+     *          @OA\Property(property="id", type="int", format="number", example=2),
+     *        )
+     *     )
+     *     ),
+     * @OA\Response(
+     *    response=400,
+     *    description="Bad Request",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="email", type="string", example="The email has already been taken.")
+     *        )
+     *     ),
+     *  security={{ "apiAuth": {} }}
+     * )
+     */
+    public function edit(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id'     => 'required|int',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['type' => 'data' , 'error' => $validator->errors()], 422);
+        }
+
+        try {
+            $obj = $request->all();
+            $user = User::find($request->id);
+            if ($user) {
+                foreach ($obj as $key => $value)
+                {
+                    if($value != "id"){
+
+                        $user->$key = $value;
+
+                    }
+                }
+                $user->save();
+
+                return response()->json($user, 200);
+
+            } else {
+                return response()->json(['type' => 'data' , 'error' => 'id '.$request->id.' user not exists'], 422);
+
+            }
+        } catch (\Exception $th) {
+            return response()->json(['type' => 'sql' , 'error' => $th->getMessage()], 422);
+        }
+    }
+
+
+
 
     /**
      * Log the user out (Invalidate the token).
@@ -408,8 +500,13 @@ class AuthController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        $exists = User::wherePassport($request->dni)->exists();
+        $user = User::wherePassport($request->dni)->whereAllow(1)->first();
 
-        return response()->json(["message" => $exists], 200);
+        if ($user === null) {
+            $user = false;
+        }
+
+
+        return response()->json(["message" => $user], 200);
     }
 }

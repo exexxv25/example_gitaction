@@ -884,11 +884,6 @@
                                         "format": "number",
                                         "example": "12345678"
                                     },
-                                    "allow": {
-                                        "type": "string",
-                                        "format": "boolean",
-                                        "example": "1"
-                                    },
                                     "lastname": {
                                         "type": "string",
                                         "format": "text",
@@ -1019,6 +1014,171 @@
                         }
                     }
                 }
+            }
+        },
+        "/api/v1/user/edit": {
+            "put": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Editar usuario",
+                "description": "Editar de usuarios",
+                "operationId": "authEdit",
+                "requestBody": {
+                    "description": "Datos del usuario",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "type": "integer",
+                                        "format": "number",
+                                        "example": "1"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "Administrador"
+                                    },
+                                    "lastname": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "admin2Apellido"
+                                    },
+                                    "passport": {
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": "87654321"
+                                    },
+                                    "phone": {
+                                        "type": "int",
+                                        "format": "number",
+                                        "example": "12345678"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "admin2@neighbors.com"
+                                    },
+                                    "avatar": {
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "mi_foto2.jpg"
+                                    },
+                                    "user_relative": {
+                                        "type": "integer",
+                                        "format": "number",
+                                        "example": "1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User successfully registered"
+                                        },
+                                        "user": {
+                                            "properties": {
+                                                "habilitado": {
+                                                    "type": "string",
+                                                    "format": "boolean",
+                                                    "example": "1"
+                                                },
+                                                "nombre": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "adminNombre"
+                                                },
+                                                "apellido": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "adminApellido"
+                                                },
+                                                "dni": {
+                                                    "type": "int",
+                                                    "format": "number",
+                                                    "example": "87654321"
+                                                },
+                                                "telefono": {
+                                                    "type": "int",
+                                                    "format": "number",
+                                                    "example": "12345678"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "admin@neighbors.com"
+                                                },
+                                                "img": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "mi_foto.jpg"
+                                                },
+                                                "uid": {
+                                                    "type": "string",
+                                                    "format": "text",
+                                                    "example": "HQ21SD1R1F8S"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2021-01-18T15:31:11.000000Z"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2021-01-18T15:31:11.000000Z"
+                                                },
+                                                "id": {
+                                                    "type": "int",
+                                                    "format": "number",
+                                                    "example": 2
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "email": {
+                                            "type": "string",
+                                            "example": "The email has already been taken."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
             }
         },
         "/auth/logout": {
@@ -2333,6 +2493,205 @@
                                         "name": {
                                             "type": "string",
                                             "example": "The name field is required."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/location/asignLot": {
+            "post": {
+                "tags": [
+                    "Lotes"
+                ],
+                "summary": "Asignar un lote",
+                "description": "Asignar un lote (con Token)",
+                "operationId": "asigLot",
+                "requestBody": {
+                    "description": "Datos para asignar",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "location_id",
+                                    "dni"
+                                ],
+                                "properties": {
+                                    "location_id": {
+                                        "description": "Id del barrio",
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "1"
+                                    },
+                                    "dni": {
+                                        "description": "Dni del usuario dueño del lote",
+                                        "type": "string",
+                                        "format": "text",
+                                        "example": "1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Location successfully registered"
+                                        },
+                                        "objLocation": {
+                                            "properties": {
+                                                "obj": {
+                                                    "type": "string",
+                                                    "example": "array()"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Wrong credentials response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user_id": {
+                                            "type": "string",
+                                            "example": "The user_id field is required."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/location/unasignLot": {
+            "delete": {
+                "tags": [
+                    "Lotes"
+                ],
+                "summary": "Desasignar un lote",
+                "description": "Desasignar un lote (con Token)",
+                "operationId": "unasigLot",
+                "requestBody": {
+                    "description": "Datos",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "description": "Id del lote",
+                                        "type": "intenger",
+                                        "format": "number",
+                                        "example": "1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Location successfully registered"
+                                        },
+                                        "objLocation": {
+                                            "properties": {
+                                                "obj": {
+                                                    "type": "string",
+                                                    "example": "array()"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Wrong credentials response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user_id": {
+                                            "type": "string",
+                                            "example": "The user_id field is required."
                                         }
                                     },
                                     "type": "object"
