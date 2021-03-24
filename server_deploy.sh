@@ -1,36 +1,20 @@
 #!/bin/sh
 set -e
 
-echo "Deploying application ..."
+echo "-Change dir to"
 
-# Enter maintenance mode
-(php artisan down ) || true
-    # Update codebase
-    # git fetch origin deploy
-    # git reset --hard origin/deploy
-    git fetch
+cd /home/neighborsbackend/neighbors-backend-laravel/ && pwd
 
-    git checkout vendor/composer/autoload_classmap.php
-    git checkout vendor/composer/autoload_static.php
-    git checkout vendor/composer/InstalledVersions.php
-    git checkout vendor/composer/installed.php
-    git checkout vendor/composer/package-versions-deprecated/src/PackageVersions/Versions.php
+echo "-Deploying application ..."
 
-    git pull
-    # Install dependencies based on lock file
-    composer update -n
+echo "-Pulling GitHub"
 
-    # Migrate database
-    php artisan migrate --force
-    php artisan route:cache
-    php artisan route:clear
-    php artisan cache:clear
-    php artisan view:cache
-    php artisan view:clear
-    php artisan optimize
+su neighborsbackend -c echo "ok" && git pull
+
+echo "-Docker process to migrates DB"
+
+docker exec -it neighbors_bk_app php artisan migrate
+
+echo "-Application deployed!"
 
 
-# Exit maintenance mode
-php artisan up
-
-echo "Application deployed!"

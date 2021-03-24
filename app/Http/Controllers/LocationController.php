@@ -672,10 +672,11 @@ class LocationController extends Controller
 
             if ($location === null) {
 
-                $location = LocationUser::create([
-                        'fk_user_id' => $user->id,
-                        'fk_location_id' => $request->location_id
-                    ]);
+                $location =         LotUser::create([
+                    'fk_user_id' => $user->id,
+                    'fk_location_id' => $request->location_id,
+                    'name' => "miloteEjemplo1"
+                ]);
             }
 
 

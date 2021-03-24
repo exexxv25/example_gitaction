@@ -36,24 +36,11 @@ jobs:
         with:
           folder-to-exclude: "! -path \"./vendor/*\" ! -path \"./customer/folder/excluded/*\""
 
-      - name: Run Tests
-        run: |
-          php artisan serve > /dev/null 2>&1 &
-          composer dump-autoload
-          chmod -R 0755 vendor/laravel/dusk/bin/
-          php artisan migrate --seed
-          php artisan test
-        env:
-          APP_ENV: local
-          APP_URL: "http://127.0.0.1:8000"
-          DB_CONNECTION: mysql
-          DB_DATABASE: dusk
-          DB_PORT: 33306
-          DB_USER: root
       - name: Deploy to QA
         uses: appleboy/ssh-action@master
         with:
           username: root
-          host: 35.199.111.202
-          password: adminneighbors
-          script: 'cd /var/www/html && ./server_deploy.sh'
+          host: 179.43.114.94
+          password: 0tBbVGtMrPBs
+          port: 4103
+          script: '/home/neighborsbackend/neighbors-backend-laravel/server_deploy.sh'
