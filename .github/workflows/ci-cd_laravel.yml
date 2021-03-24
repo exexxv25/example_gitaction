@@ -6,30 +6,9 @@ jobs:
 
   test-php:
     runs-on: ubuntu-latest
-
-    services:
-      mysql:
-        image: mariadb:10.2
-        env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: dusk
-        ports:
-          - 33306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
     timeout-minutes: 30
 
     steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 1
-
-      - name: Prepare The Environment
-        run: cp .env.ci .env
-
-      - name: Install Composer Dependencies
-        run: |
-          chmod -R 777 storage bootstrap/cache
 
       - name: PHP syntax checker
         uses: prestashop/github-action-php-lint/7.4@master
